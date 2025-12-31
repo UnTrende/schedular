@@ -3,6 +3,9 @@ import { auth } from '@clerk/nextjs/server'
 import { getOAuthUrl, generateOAuthState } from '@/lib/oauth-providers'
 import { Platform } from '@/types'
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic'
+
 // GET /api/oauth/[platform]
 // Initiates OAuth flow for a platform
 export async function GET(

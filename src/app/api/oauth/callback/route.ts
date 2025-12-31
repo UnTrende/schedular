@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { parseOAuthState } from '@/lib/oauth-providers'
 import { createConnection } from '@/lib/db/connections'
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic'
+
 // GET /api/oauth/callback
 // Handles OAuth callback from providers
 export async function GET(request: NextRequest) {
