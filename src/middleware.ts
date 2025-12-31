@@ -6,12 +6,20 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks(.*)',
+  '/api/test-auth',
+  '/api/db-test',
 ])
 
 export default clerkMiddleware((auth, request) => {
   // Protect all routes except public ones
   if (!isPublicRoute(request)) {
-    auth().protect()
+    try {
+      auth().protect()
+    } catch (error) {
+      console.error('Clerk auth error:', error)
+      // If Clerk is not configured, redirect to home
+      return Response.redirect(new URL('/', request.url))
+    }
   }
 })
 
