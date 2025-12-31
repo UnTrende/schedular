@@ -1,0 +1,18 @@
+{
+  "name": "social-scheduler-worker",
+  "version": "1.0.0",
+  "description": "Worker service for publishing social media posts",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

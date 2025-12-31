@@ -1,0 +1,48 @@
+{
+  "name": "social-scheduler",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.958.0",
+    "@aws-sdk/s3-request-presigner": "^3.958.0",
+    "@clerk/nextjs": "^5.0.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "@tailwindcss/forms": "^0.5.11",
+    "@uppy/aws-s3-multipart": "^3.5.0",
+    "@uppy/core": "^3.9.0",
+    "@uppy/dashboard": "^3.7.0",
+    "@uppy/react": "^5.1.1",
+    "@upstash/qstash": "^2.8.4",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.10",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^3.4.0",
+    "uuid": "^13.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8",
+    "eslint-config-next": "^14.1.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "description": "",
+  "main": "next.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
