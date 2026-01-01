@@ -1,10 +1,12 @@
-import { supabase } from '@/lib/supabase/client'
-import { getSupabaseServer } from '@/lib/supabase/server'
+import { getSupabaseServerClient } from '@/lib/supabase/server'
 import { Platform, ConnectionStatus } from '@/types'
+
+// Helper to get the correct client
+const getDb = () => getSupabaseServerClient()
 
 // Client-side connection operations
 export async function getUserConnections(userId: string) {
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('social_connections')
     .select('*')
     .eq('user_id', userId)
@@ -19,7 +21,7 @@ export async function getUserConnections(userId: string) {
 }
 
 export async function getConnectionByPlatform(userId: string, platform: Platform) {
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('social_connections')
     .select('*')
     .eq('user_id', userId)
@@ -40,7 +42,7 @@ export async function createConnection(data: {
   platform_username?: string
   platform_user_id?: string
 }) {
-  const { data: connection, error } = await supabase()
+  const { data: connection, error } = await getDb()
     .from('social_connections')
     .insert([data])
     .select()
@@ -64,7 +66,7 @@ export async function updateConnection(
     last_synced_at?: string
   }
 ) {
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('social_connections')
     .update(updates)
     .eq('id', connectionId)
@@ -80,7 +82,7 @@ export async function updateConnection(
 }
 
 export async function deleteConnection(connectionId: string) {
-  const { error } = await supabase()
+  const { error } = await getDb()
     .from('social_connections')
     .delete()
     .eq('id', connectionId)
@@ -95,7 +97,7 @@ export async function deleteConnection(connectionId: string) {
 
 // Server-side operations (for API routes)
 export async function getConnectionByPlatformServer(userId: string, platform: Platform) {
-  const supabase = getSupabaseServer()
+  const supabase = getDb()
   
   const { data, error } = await supabase
     .from('social_connections')
