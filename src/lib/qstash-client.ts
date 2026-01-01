@@ -7,10 +7,10 @@ export function getQStashClient() {
     return qstashClient
   }
 
-  const token = process.env.QSTASH_TOKEN
+  const token = process.env.QSTASH_TOKEN || process.env.STASH_TOKEN
 
   if (!token) {
-    throw new Error('Missing QSTASH_TOKEN environment variable')
+    throw new Error('Missing QSTASH_TOKEN environment variable. Please add it to your environment settings.')
   }
 
   qstashClient = new Client({ token })
