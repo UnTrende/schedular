@@ -1,14 +1,16 @@
-import { supabase } from '@/lib/supabase/client'
-import { getSupabaseServer } from '@/lib/supabase/server'
+import { getSupabaseServerClient } from '@/lib/supabase/server'
 import { Platform, PostStatus } from '@/types'
 
-// Client-side post operations
+// Helper to get the correct client
+const getDb = () => getSupabaseServerClient()
+
+// Operations
 export async function getUserPosts(userId: string, filters?: {
   status?: PostStatus
   platform?: Platform
   limit?: number
 }) {
-  let query = supabase()
+  let query = getDb()
     .from('scheduled_posts')
     .select('*')
     .eq('user_id', userId)
@@ -38,7 +40,7 @@ export async function getUserPosts(userId: string, filters?: {
 }
 
 export async function getPostById(postId: string) {
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('scheduled_posts')
     .select('*')
     .eq('id', postId)
@@ -58,7 +60,7 @@ export async function createPost(data: {
   scheduled_at: string
   platform: Platform
 }) {
-  const { data: post, error } = await supabase()
+  const { data: post, error } = await getDb()
     .from('scheduled_posts')
     .insert([{
       ...data,
@@ -87,7 +89,7 @@ export async function updatePost(
     error_message?: string
   }
 ) {
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('scheduled_posts')
     .update(updates)
     .eq('id', postId)
@@ -103,7 +105,7 @@ export async function updatePost(
 }
 
 export async function deletePost(postId: string) {
-  const { error } = await supabase()
+  const { error } = await getDb()
     .from('scheduled_posts')
     .delete()
     .eq('id', postId)
@@ -119,7 +121,7 @@ export async function deletePost(postId: string) {
 export async function getUpcomingPosts(userId: string, limit = 10) {
   const now = new Date().toISOString()
   
-  const { data, error } = await supabase()
+  const { data, error } = await getDb()
     .from('scheduled_posts')
     .select('*')
     .eq('user_id', userId)
@@ -137,7 +139,7 @@ export async function getUpcomingPosts(userId: string, limit = 10) {
 }
 
 export async function getPostStats(userId: string) {
-  const { data: allPosts, error } = await supabase()
+  const { data: allPosts, error } = await getDb()
     .from('scheduled_posts')
     .select('status')
     .eq('user_id', userId)
@@ -163,7 +165,7 @@ export async function getPostStats(userId: string) {
 
 // Server-side operations (for API routes and scheduled jobs)
 export async function getPostsToPublishServer() {
-  const supabase = getSupabaseServer()
+  const supabase = getDb()
   const now = new Date().toISOString()
 
   const { data, error } = await supabase
@@ -181,7 +183,7 @@ export async function updatePostStatusServer(
   status: PostStatus,
   errorMessage?: string
 ) {
-  const supabase = getSupabaseServer()
+  const supabase = getDb()
   
   const updates: any = { status }
   
