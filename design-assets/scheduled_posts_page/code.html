@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scheduled Posts - SocialScheduler</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a202e",
+                        "text-primary-light": "#0e121b",
+                        "text-primary-dark": "#ffffff",
+                        "text-secondary-light": "#4d6599",
+                        "text-secondary-dark": "#94a3b8",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark transition-colors duration-200">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark flex flex-col justify-between hidden md:flex">
+<div class="flex flex-col h-full p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-lg size-10">
+<span class="material-symbols-outlined text-primary text-2xl">rocket_launch</span>
+</div>
+<h1 class="text-lg font-bold tracking-tight">SocialScheduler</h1>
+</div>
+<!-- Menu Items -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined filled">schedule</span>
+<span class="font-medium">Scheduled Posts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">calendar_month</span>
+<span class="font-medium">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+<span class="font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- Create Button Sidebar -->
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg py-3 px-4 font-semibold shadow-lg shadow-primary/30 transition-all mt-auto mb-4">
+<span class="material-symbols-outlined text-xl">add</span>
+                    New Post
+                </button>
+<!-- User Profile -->
+<div class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+<div class="size-9 rounded-full bg-cover bg-center" data-alt="User profile avatar showing a smiling person" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPf5nQiEovUciIqVYJgHYMchbB62MF795WQ0fTNke2PlvzVw9hxd-P7J1qLFHIoL7CA1lAXzEMCEZQoTwhclXFS598F5i44JZyhB8SrKyePANof4MX4suVGJHoxwBU6fF4QlVHxmEuJlGg9wijgfyYu95tJYj9zrBDW9lO3LUEXDUGVe_QRdeDP9XO6pYuXZ8hXsf87N0jbdAwQAqfJObHK_vgOJbgQoif2thvLk8dwf3VVScXMJMj2zzm4PRF41wuOhCvhSEezlLZ');"></div>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-semibold truncate">Jane Doe</p>
+<p class="text-xs text-text-secondary-light dark:text-text-secondary-dark truncate">Free Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Mobile Header -->
+<header class="md:hidden flex items-center justify-between p-4 bg-white dark:bg-card-dark border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">rocket_launch</span>
+<span class="font-bold">SocialScheduler</span>
+</div>
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</header>
+<div class="flex-1 overflow-y-auto p-4 md:p-8 lg:px-12">
+<div class="max-w-5xl mx-auto flex flex-col gap-6">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-2xl md:text-3xl font-bold text-text-primary-light dark:text-text-primary-dark">Scheduled Posts</h2>
+<p class="text-text-secondary-light dark:text-text-secondary-dark">Manage and monitor your upcoming content calendar.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                                Filter
+                            </button>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg py-2 px-4 font-semibold shadow-md shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="hidden sm:inline">Create Post</span>
+<span class="sm:hidden">Create</span>
+</button>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium transition-colors">
+                            All Posts
+                        </button>
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium transition-colors">
+<span class="text-[#1DA1F2] text-lg font-bold">𝕏</span> Twitter / X
+                        </button>
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium transition-colors">
+<span class="text-[#0A66C2] text-lg font-bold">in</span> LinkedIn
+                        </button>
+<button class="flex-shrink-0 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium transition-colors">
+<span class="text-[#E1306C] text-lg font-bold">IG</span> Instagram
+                        </button>
+</div>
+<!-- Posts List -->
+<div class="flex flex-col gap-4">
+<!-- Date Header -->
+<div class="flex items-center gap-3 py-2">
+<h3 class="font-semibold text-lg">Upcoming</h3>
+<div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+</div>
+<!-- Card 1: Queued (LinkedIn) -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row gap-5">
+<!-- Left Content -->
+<div class="flex-1 flex flex-col gap-3">
+<!-- Header -->
+<div class="flex items-center gap-2 text-sm">
+<div class="flex items-center justify-center size-6 rounded bg-[#0A66C2]/10 text-[#0A66C2]">
+<span class="font-bold text-xs">in</span>
+</div>
+<span class="font-medium text-text-primary-light dark:text-text-primary-dark">Jane Doe</span>
+<span class="text-slate-400">•</span>
+<span class="text-text-secondary-light dark:text-text-secondary-dark flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">event</span>
+                                            Oct 24, 10:00 AM
+                                        </span>
+</div>
+<!-- Body -->
+<p class="text-text-primary-light dark:text-text-primary-dark text-base leading-relaxed line-clamp-2">
+                                        Excited to announce our new product launch! We have been working hard on this for the past 6 months. It's a game changer for the industry and we can't wait for you to see it. 🚀 #ProductLaunch #Innovation
+                                    </p>
+<!-- Status Badge (Mobile View) -->
+<div class="md:hidden mt-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                            Queued
+                                        </span>
+</div>
+</div>
+<!-- Right Content: Media & Actions -->
+<div class="flex items-start gap-4 md:w-[280px] shrink-0">
+<!-- Media Thumbnail -->
+<div class="w-full md:w-32 aspect-video md:aspect-square rounded-lg bg-cover bg-center border border-slate-100 dark:border-slate-700 shrink-0" data-alt="Abstract colorful geometric shapes representing innovation" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtYfXa09T4hHvyKr0vZ5_16p6XXpqotmKcf1RDA0P5Ti7HoMxxWd8BFljkDRCEmfqZV8CG5L7a4agK2xCYeyCnUyyt3uJqDH4rZ3c1i6hilz1b6x7gl58S3Ch1beh8BqSP9qewOdzKxxbhdM60r81s1LZhVLjAgCVV0osF-5CGhCribkHYguq7KcKwooFF3lpjUmYQoZGbmDEfABCe7ES0M57reiidQHd29wbDB7xn-6mP0s3bcwJqrr0FXFhGfc0srj5NUMOaTEf6');"></div>
+<!-- Desktop Actions & Badge -->
+<div class="hidden md:flex flex-col items-end gap-3 flex-1 h-full justify-between">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+                                            Queued
+                                        </span>
+<div class="flex items-center gap-1">
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile Actions -->
+<div class="md:hidden flex items-center justify-end gap-2 border-t border-slate-100 dark:border-slate-800 pt-3 mt-1">
+<button class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                        Edit
+                                    </button>
+<button class="p-1.5 text-text-secondary-light dark:text-text-secondary-dark bg-slate-100 dark:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Failed (Twitter) -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-red-200 dark:border-red-900/50 p-5 shadow-sm relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+<div class="flex flex-col md:flex-row gap-5">
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex items-center gap-2 text-sm">
+<div class="flex items-center justify-center size-6 rounded bg-slate-900 text-white dark:bg-white dark:text-slate-900">
+<span class="font-bold text-xs">𝕏</span>
+</div>
+<span class="font-medium text-text-primary-light dark:text-text-primary-dark">Tech News Daily</span>
+<span class="text-slate-400">•</span>
+<span class="text-text-secondary-light dark:text-text-secondary-dark flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">event</span>
+                                            Today, 8:30 AM
+                                        </span>
+</div>
+<p class="text-text-primary-light dark:text-text-primary-dark text-base leading-relaxed line-clamp-2">
+                                        Breaking: AI adoption rates have tripled in the last quarter according to the latest industry report. Read the full analysis here: socialscheduler.io/ai-report 📈 #AI #TechNews
+                                    </p>
+<div class="md:hidden mt-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+<span class="material-symbols-outlined text-xs">error</span>
+                                            Failed
+                                        </span>
+</div>
+</div>
+<div class="flex items-start gap-4 md:w-[280px] shrink-0">
+<!-- No Image for this text post -->
+<div class="w-full md:w-32 aspect-video md:aspect-square rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shrink-0 flex items-center justify-center text-text-secondary-light dark:text-text-secondary-dark">
+<span class="material-symbols-outlined text-3xl opacity-20">article</span>
+</div>
+<div class="hidden md:flex flex-col items-end gap-3 flex-1 h-full justify-between">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">
+<span class="material-symbols-outlined text-sm">error</span>
+                                            Failed
+                                        </span>
+<div class="flex items-center gap-1">
+<button class="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors mr-1 shadow-sm">
+                                                Retry
+                                            </button>
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="md:hidden flex items-center justify-end gap-2 border-t border-red-100 dark:border-red-900/30 pt-3 mt-1">
+<button class="flex items-center gap-1 px-3 py-1.5 text-sm font-bold text-white bg-primary rounded-lg">Retry</button>
+<button class="p-1.5 text-text-secondary-light dark:text-text-secondary-dark bg-slate-100 dark:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Queued (Instagram) - Multi Image -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row gap-5">
+<div class="flex-1 flex flex-col gap-3">
+<div class="flex items-center gap-2 text-sm">
+<div class="flex items-center justify-center size-6 rounded bg-gradient-to-tr from-[#fec053] via-[#f2203e] to-[#b721ff] text-white">
+<span class="font-bold text-xs">IG</span>
+</div>
+<span class="font-medium text-text-primary-light dark:text-text-primary-dark">Design Studio</span>
+<span class="text-slate-400">•</span>
+<span class="text-text-secondary-light dark:text-text-secondary-dark flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">event</span>
+                                            Oct 25, 2:00 PM
+                                        </span>
+</div>
+<p class="text-text-primary-light dark:text-text-primary-dark text-base leading-relaxed line-clamp-2">
+                                        Swipe left to see our latest office renovation! We wanted to create a space that inspires creativity and collaboration. Let us know what you think in the comments! 👇 
+                                    </p>
+<div class="md:hidden mt-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                            Queued
+                                        </span>
+</div>
+</div>
+<div class="flex items-start gap-4 md:w-[280px] shrink-0">
+<!-- Grid Thumbnail -->
+<div class="w-full md:w-32 aspect-video md:aspect-square rounded-lg overflow-hidden grid grid-cols-2 gap-0.5 shrink-0 border border-slate-100 dark:border-slate-700">
+<div class="bg-cover bg-center h-full w-full" data-alt="Modern office interior with glass walls" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlBSxe6KpEPY9pDqmbbBw9pdd1swt66VurlCuQSYQLASyLrM6vpTDkqAX79B09YCPtuhZZdpNI3J5C_E7OU1uDpZKxpg9Y0FWKhjvQ7Xo0l6BKCXA-1A9VpBC7gQof_vWXXr9rQQHukL1NLFZahyHzijJVKkxp7u4VNDNJOqbd8FAvQSmaaaLxwsfTgvaw11wHsYJRu10Bn7FW0aX5F7yJkb4p99whX3gsd5syo7GOopEpCXs8pjbYMtm4n01WCj0ZhEek-cmlfMaP');"></div>
+<div class="bg-cover bg-center h-full w-full" data-alt="Team brainstorming session with sticky notes" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBefHFDVpwomCdld2AWOTOmbOaOJBW8zSi6BINilcnDsy_-gYRXTcxI6FPJHezIpE8_5ItKH0qSt7z5EIm08RJbjI5oWpJQFF9NDyfa29K8biNdxLaoIqAvJtihFubtsbEVvFf8mRSOEvWxj0UcmfL0yimWCGBaxNid4vxOh_lmffLxlRw4Kv4wmWwBBbnhNhEHDFQt2zAm48pNInKrP17kxEmhRwtvG0sQYBJMGgmC6yM88m4AJ__C79-1WJCopzvN3ac9xs6skOjx');"></div>
+<div class="bg-cover bg-center h-full w-full" data-alt="Cozy lounge area with plants" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDy44HmxyBIV_4VASQ4rZVx7H1NYR-soJpvzBMPl87CbId-bncOUtvQU_GOVOkLTSyT2KlFg6rJIFlwXNXO9Ij5QW0zlXjoeIgm_MO2GRTghVZTP7WthrvAN6qHqnYwNtR6i38l_kS-dshLED_cmBb0blWKlvSYb63kOSjUPhKn8Tpd-FMcj9qIbv8BHhGla3XKiIA29EUkpxVKi8ZEaVw6UukRz-eH8XpwZwT3Y5RbjGmcjyV1KyoHdylcC34Sv8UcCzbfCj-8lv2X');"></div>
+<div class="bg-slate-100 dark:bg-slate-800 flex items-center justify-center h-full w-full text-xs font-bold text-text-secondary-light dark:text-text-secondary-dark">
+                                            +2
+                                        </div>
+</div>
+<div class="hidden md:flex flex-col items-end gap-3 flex-1 h-full justify-between">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+                                            Queued
+                                        </span>
+<div class="flex items-center gap-1">
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="md:hidden flex items-center justify-end gap-2 border-t border-slate-100 dark:border-slate-800 pt-3 mt-1">
+<button class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark bg-slate-100 dark:bg-slate-800 rounded-lg">Edit</button>
+<button class="p-1.5 text-text-secondary-light dark:text-text-secondary-dark bg-slate-100 dark:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Date Header (Past/Example for Empty State below) -->
+<div class="flex items-center gap-3 py-4 mt-4">
+<h3 class="font-semibold text-lg text-text-secondary-light dark:text-text-secondary-dark">Later</h3>
+<div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+</div>
+<!-- Empty State Component (As requested in context, although I have items above, I'll place it here as if the 'Later' section is empty or as a demo of the component) -->
+<div class="flex flex-col items-center justify-center py-16 px-4 bg-slate-50 dark:bg-slate-800/20 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+<div class="bg-white dark:bg-card-dark p-4 rounded-full shadow-sm mb-4">
+<div class="bg-primary/10 rounded-full p-4">
+<span class="material-symbols-outlined text-primary text-4xl">calendar_add_on</span>
+</div>
+</div>
+<h3 class="text-xl font-bold text-text-primary-light dark:text-text-primary-dark mb-2 text-center">No posts scheduled for later</h3>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-center max-w-md mb-6">
+                                 Your content calendar is looking a bit empty. Start planning ahead to keep your audience engaged.
+                             </p>
+<button class="flex items-center gap-2 bg-white dark:bg-card-dark border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-primary-light dark:text-text-primary-dark rounded-lg py-2.5 px-5 font-semibold transition-all">
+<span class="material-symbols-outlined text-primary">add</span>
+                                Schedule a Post
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

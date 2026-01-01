@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Time Picker Modal Design</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e232e",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#374151",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for the time dropdown if needed */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200 min-h-screen flex flex-col">
+<!-- Design Presentation Container -->
+<div class="flex-1 flex flex-wrap items-start justify-center gap-12 p-8 lg:p-16 overflow-y-auto">
+<!-- STATE 1: BEST TIME TAB -->
+<div class="flex flex-col gap-4 w-full max-w-[480px]">
+<span class="text-sm font-semibold text-slate-500 uppercase tracking-wider text-center">State: Best Time Selection</span>
+<!-- Modal Card -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-2xl border border-border-light dark:border-border-dark overflow-hidden flex flex-col">
+<!-- Header -->
+<div class="px-6 pt-6 pb-2">
+<h2 class="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">Schedule Post</h2>
+</div>
+<!-- Tabs -->
+<div class="px-6 border-b border-border-light dark:border-border-dark">
+<div class="flex gap-8">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-primary text-slate-900 dark:text-white pb-3 pt-4 px-1 transition-colors">
+<span class="text-sm font-bold leading-normal tracking-wide">Best Time</span>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-3 pt-4 px-1 transition-colors">
+<span class="text-sm font-bold leading-normal tracking-wide">Custom Time</span>
+</button>
+</div>
+</div>
+<!-- Content: Best Time Radio List -->
+<div class="p-6 flex flex-col gap-4" style="--radio-dot-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(36,99,235)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273%27/%3e%3c/svg%3e');">
+<label class="group cursor-pointer flex items-center gap-4 rounded-lg border border-border-light dark:border-border-dark p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors bg-blue-50/30 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
+<input checked="" class="h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-transparent checked:border-primary checked:bg-[image:--radio-dot-svg] focus:ring-0 focus:ring-offset-0 checked:focus:border-primary" name="best-time" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-medium leading-normal">Today</p>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]">stars</span>
+<p class="text-primary text-xs font-semibold">Recommended at 4:30 PM</p>
+</div>
+</div>
+</label>
+<label class="group cursor-pointer flex items-center gap-4 rounded-lg border border-border-light dark:border-border-dark p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<input class="h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-transparent checked:border-primary checked:bg-[image:--radio-dot-svg] focus:ring-0 focus:ring-offset-0 checked:focus:border-primary" name="best-time" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-medium leading-normal">Tomorrow</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal leading-normal">Recommended at 9:00 AM</p>
+</div>
+</label>
+<label class="group cursor-pointer flex items-center gap-4 rounded-lg border border-border-light dark:border-border-dark p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<input class="h-5 w-5 border-2 border-slate-300 dark:border-slate-600 bg-transparent text-transparent checked:border-primary checked:bg-[image:--radio-dot-svg] focus:ring-0 focus:ring-offset-0 checked:focus:border-primary" name="best-time" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-sm font-medium leading-normal">This Weekend</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal leading-normal">Sat, Nov 12 • 11:00 AM</p>
+</div>
+</label>
+</div>
+<!-- Footer -->
+<div class="px-6 py-4 border-t border-border-light dark:border-border-dark flex justify-end gap-3 bg-slate-50 dark:bg-[#1a1f2b]">
+<button class="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        Cancel
+                    </button>
+<button class="px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-primary hover:bg-blue-600 shadow-sm shadow-blue-500/30 transition-all">
+                        Confirm Schedule
+                    </button>
+</div>
+</div>
+</div>
+<!-- STATE 2: CUSTOM TIME TAB -->
+<div class="flex flex-col gap-4 w-full max-w-[480px]">
+<span class="text-sm font-semibold text-slate-500 uppercase tracking-wider text-center">State: Custom Selection</span>
+<!-- Modal Card -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-2xl border border-border-light dark:border-border-dark overflow-hidden flex flex-col h-full">
+<!-- Header -->
+<div class="px-6 pt-6 pb-2">
+<h2 class="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">Schedule Post</h2>
+</div>
+<!-- Tabs -->
+<div class="px-6 border-b border-border-light dark:border-border-dark">
+<div class="flex gap-8">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-3 pt-4 px-1 transition-colors">
+<span class="text-sm font-bold leading-normal tracking-wide">Best Time</span>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-primary text-slate-900 dark:text-white pb-3 pt-4 px-1 transition-colors">
+<span class="text-sm font-bold leading-normal tracking-wide">Custom Time</span>
+</button>
+</div>
+</div>
+<!-- Content: Calendar + Time Picker -->
+<div class="p-6 flex flex-col gap-6">
+<!-- Calendar Section -->
+<div class="flex flex-col items-center">
+<div class="flex w-full items-center justify-between mb-4 px-2">
+<button class="text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight">December 2023</p>
+<button class="text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-7 w-full gap-y-2">
+<!-- Weekday Headers -->
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">S</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">M</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">T</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">W</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">T</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">F</span>
+<span class="text-slate-400 dark:text-slate-500 text-[11px] font-bold uppercase tracking-wider text-center pb-2">S</span>
+<!-- Days (Simplified for demo) -->
+<!-- Past/Disabled Days -->
+<span class="h-9 w-full flex items-center justify-center text-slate-300 dark:text-slate-700 text-sm">26</span>
+<span class="h-9 w-full flex items-center justify-center text-slate-300 dark:text-slate-700 text-sm">27</span>
+<span class="h-9 w-full flex items-center justify-center text-slate-300 dark:text-slate-700 text-sm">28</span>
+<span class="h-9 w-full flex items-center justify-center text-slate-300 dark:text-slate-700 text-sm">29</span>
+<span class="h-9 w-full flex items-center justify-center text-slate-300 dark:text-slate-700 text-sm">30</span>
+<!-- Current Month -->
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">1</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">2</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">3</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">4</button>
+<!-- Selected Day -->
+<button class="h-9 w-full flex items-center justify-center">
+<div class="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-md shadow-blue-500/20 text-sm font-bold">5</div>
+</button>
+<!-- Remaining Days -->
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">6</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">7</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">8</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">9</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">10</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">11</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">12</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">13</button>
+<button class="h-9 w-full flex items-center justify-center text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">14</button>
+</div>
+</div>
+<!-- Time Selection Section -->
+<div class="border-t border-border-light dark:border-border-dark pt-5">
+<label class="flex flex-col w-full gap-2">
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Select Time (9 AM - 9 PM)</span>
+<div class="relative">
+<select class="appearance-none w-full bg-slate-50 dark:bg-slate-800 border border-border-light dark:border-border-dark rounded-lg py-3 pl-4 pr-10 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer font-medium">
+<option disabled="" value="">Choose a time...</option>
+<option value="9:00 AM">9:00 AM</option>
+<option value="9:15 AM">9:15 AM</option>
+<option selected="" value="9:30 AM">9:30 AM</option>
+<option value="9:45 AM">9:45 AM</option>
+<option value="10:00 AM">10:00 AM</option>
+<option value="10:15 AM">10:15 AM</option>
+<option value="10:30 AM">10:30 AM</option>
+<!-- ... -->
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+</div>
+</label>
+</div>
+</div>
+<!-- Footer -->
+<div class="px-6 py-4 border-t border-border-light dark:border-border-dark flex justify-end gap-3 bg-slate-50 dark:bg-[#1a1f2b] mt-auto">
+<button class="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        Cancel
+                    </button>
+<!-- Enabled because a date and time are selected -->
+<button class="px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-primary hover:bg-blue-600 shadow-sm shadow-blue-500/30 transition-all">
+                        Confirm Schedule
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

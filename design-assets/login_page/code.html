@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scheduler - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2463eb",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display text-slate-900 dark:text-white transition-colors duration-200">
+<!-- Main Container -->
+<div class="flex-grow flex items-center justify-center p-4">
+<div class="w-full max-w-[480px] flex flex-col gap-8">
+<!-- Header Section -->
+<div class="text-center space-y-3">
+<div class="inline-flex items-center justify-center p-3 bg-primary/10 rounded-xl mb-2">
+<span class="material-symbols-outlined text-primary text-4xl">calendar_month</span>
+</div>
+<h1 class="text-4xl font-black tracking-tight text-slate-900 dark:text-white">Scheduler</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg">Your all-in-one social media command center.</p>
+</div>
+<!-- Auth Card -->
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl dark:shadow-none dark:border dark:border-slate-700 p-8 sm:p-10 flex flex-col gap-6">
+<!-- Social Login Buttons -->
+<div class="flex flex-col gap-3">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#1DA1F2] hover:bg-[#1a91da] text-white transition-colors duration-200 gap-3 text-base font-bold leading-normal tracking-[0.015em] focus:ring-4 focus:ring-[#1DA1F2]/30 focus:outline-none">
+<!-- Twitter Icon (Using generic material symbol as placeholder for brand icon if not available, or stylized span) -->
+<!-- Since material symbols doesn't have brand icons, I will simulate it or use a close generic one, but normally SVGs are better here. Let's use a generic 'public' icon but style it specifically or just text since requested material symbols only -->
+<!-- Actually, standard is to use SVG for brands. I will stick to Material Symbols as requested for icons, but brands like Twitter usually need SVGs. I will use a close match or just the text if strict about only Material Symbols. However, users usually expect brand logos. I'll use a placeholder circle to represent the logo spot as per strict "Material Symbols" instruction replacment. Wait, the prompt said "Replace all the icons ... with Material Symbols". I will use 'flutter_dash' or similar bird-like icon for Twitter if available, otherwise just no icon and text. Let's use a generic link symbol for now to be safe, or just text. Actually, 'account_circle' or similar is safer. -->
+<!-- Better yet, I'll use a styled span to represent the icon area as requested in the initial component but with a material symbol if it fits. -->
+<span class="material-symbols-outlined text-white text-[24px]">flutter_dash</span>
+<span class="truncate">Continue with Twitter</span>
+</button>
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white border border-slate-200 dark:bg-slate-700 dark:border-slate-600 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 transition-colors duration-200 gap-3 text-base font-bold leading-normal tracking-[0.015em] focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-600 focus:outline-none">
+<span class="material-symbols-outlined text-red-500 text-[24px]">mail</span>
+<span class="truncate">Continue with Google</span>
+</button>
+</div>
+<!-- Divider -->
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div>
+<span class="flex-shrink-0 mx-4 text-slate-400 dark:text-slate-500 text-sm font-medium">OR</span>
+<div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div>
+</div>
+<!-- Email Login Form -->
+<form class="flex flex-col gap-4" onsubmit="event.preventDefault();">
+<label class="flex flex-col gap-1.5">
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Email Address</span>
+<input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary h-12 px-4 transition-all duration-200" placeholder="name@company.com" required="" type="email"/>
+</label>
+<label class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center">
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Password</span>
+<a class="text-sm font-medium text-primary hover:text-primary/80 transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input class="form-input w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary h-12 px-4 pr-12 transition-all duration-200" placeholder="Enter your password" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+</label>
+<button class="mt-2 flex w-full cursor-pointer items-center justify-center rounded-lg h-12 px-5 bg-primary hover:bg-blue-600 text-white gap-2 text-base font-bold shadow-md shadow-blue-500/20 transition-all duration-200 focus:ring-4 focus:ring-blue-500/30 focus:outline-none" type="submit">
+<span class="truncate">Log In</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</form>
+<!-- Footer Links -->
+<div class="text-center pt-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm">
+                        Don't have an account? 
+                        <a class="font-bold text-primary hover:text-blue-600 transition-colors" href="#">Sign up</a>
+</p>
+</div>
+</div>
+<!-- Bottom Footer -->
+<div class="text-center">
+<a class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 text-xs transition-colors" href="#">Privacy Policy</a>
+<span class="text-slate-300 mx-2">•</span>
+<a class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 text-xs transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+<!-- Decorative background elements -->
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+<div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-100/50 dark:bg-blue-900/10 rounded-full blur-3xl opacity-60"></div>
+<div class="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-indigo-100/50 dark:bg-indigo-900/10 rounded-full blur-3xl opacity-60"></div>
+</div>
+</body></html>

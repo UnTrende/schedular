@@ -10,14 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#2463eb',
-        'background-light': '#f6f6f8',
-        'background-dark': '#111621',
-        'card-dark': '#1e2532',
-        'text-primary-light': '#0f172a',
-        'text-primary-dark': '#f1f5f9',
-        'text-secondary-light': '#64748b',
-        'text-secondary-dark': '#94a3b8',
+        primary: '#6366f1', // Vibrant Indigo/Purple from design
+        'background-light': '#F3F4F6', // Soft light gray background
+        'background-dark': '#0B1120',
+        'card-dark': '#1E293B',
+        'text-primary-light': '#111827',
+        'text-primary-dark': '#F3F4F6',
+        'text-secondary-light': '#6B7280',
+        'text-secondary-dark': '#9CA3AF',
       },
       fontFamily: {
         display: ['Inter', 'sans-serif'],
@@ -26,6 +26,8 @@ const config: Config = {
         DEFAULT: '0.25rem',
         lg: '0.5rem',
         xl: '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
         full: '9999px',
       },
     },

@@ -42,21 +42,21 @@
 
   /* Button Base Styles */
   .btn-primary {
-    @apply flex items-center justify-center rounded-lg px-5 py-3 bg-primary text-white font-bold hover:bg-blue-600 transition-colors duration-200 focus:ring-4 focus:ring-blue-500/30 focus:outline-none shadow-md;
+    @apply flex items-center justify-center rounded-2xl px-6 py-3 bg-primary text-white font-semibold hover:bg-indigo-500 transition-all duration-200 focus:ring-4 focus:ring-primary/20 focus:outline-none shadow-lg shadow-primary/25 active:scale-95;
   }
 
   .btn-secondary {
-    @apply flex items-center justify-center rounded-lg px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors duration-200;
+    @apply flex items-center justify-center rounded-2xl px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200 active:scale-95;
   }
 
   /* Card Styles */
   .card {
-    @apply bg-white dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6;
+    @apply bg-white dark:bg-card-dark rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-slate-100 dark:border-slate-800 p-8;
   }
 
   /* Input Styles */
   .input-base {
-    @apply w-full rounded-lg border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary transition-all duration-200;
+    @apply w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary/20 transition-all duration-200 p-3;
   }
 }
 
