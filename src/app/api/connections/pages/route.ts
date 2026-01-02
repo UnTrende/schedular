@@ -33,12 +33,16 @@ export async function GET(request: NextRequest) {
 
     const url = `https://graph.facebook.com/v18.0/me/accounts?fields=${fields}&access_token=${userToken}`
     
+    console.log(`Fetching pages for user ${userId} on ${platform}...`)
     const response = await fetch(url)
     const data = await response.json()
 
     if (data.error) {
+       console.error('Facebook Graph API Error:', data.error)
        return NextResponse.json({ error: data.error.message }, { status: 400 })
     }
+
+    console.log(`Facebook returned ${data.data?.length || 0} pages.`)
 
     // 3. Format the list for the UI
     let pages = []
