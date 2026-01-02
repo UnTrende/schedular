@@ -51,24 +51,24 @@ export async function GET(request: NextRequest) {
        pages = data.data.map((p: any) => ({
          id: p.id,
          name: p.name,
-         access_token: p.access_token, // Page Token (Long-lived usually)
+         access_token: p.access_token, // Page Token
          image: p.picture?.data?.url
        }))
     } else {
-       // Filter for pages that have an Instagram Business Account linked
+       // Instagram Logic
+       // We iterate through FB pages and find linked IG Business Accounts
        pages = data.data
          .filter((p: any) => p.instagram_business_account)
          .map((p: any) => ({
-           id: p.instagram_business_account.id, // Use IG ID
-           name: p.instagram_business_account.username,
-           // Note: For IG, we still use the PAGE token or User Token? 
-           // Standard is: Use Page Token to act on behalf of the IG account.
-           access_token: p.access_token, // Page Token (needed to manage IG)
-           image: p.instagram_business_account.profile_picture_url,
-           page_id: p.id // Keep ref to parent page
+           id: p.instagram_business_account.id, // The Instagram Account ID
+           name: p.instagram_business_account.username || p.name,
+           access_token: p.access_token, // Crucial: We use the PAGE token to manage the linked IG account
+           image: p.instagram_business_account.profile_picture_url || p.picture?.data?.url,
+           fb_page_id: p.id
          }))
     }
 
+    console.log(`Formatted ${pages.length} options for ${platform}.`)
     return NextResponse.json({ success: true, data: pages })
 
   } catch (error: any) {
