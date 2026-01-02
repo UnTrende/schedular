@@ -1,7 +1,7 @@
-import { job } from "@trigger.dev/sdk"
+import { defineJob } from "@trigger.dev/sdk"
 import { getPostById, updatePost } from "@/lib/db/posts"
 
-export const publishScheduledPost = job({
+export const publishScheduledPost = defineJob({
   id: "publish-scheduled-post",
   name: "Publish Scheduled Social Post",
   version: "1.0.0",
@@ -30,8 +30,6 @@ export const publishScheduledPost = job({
     // Direct publish inside Trigger.dev (no external worker)
     // TODO: Replace this mock publish with real platform integrations.
     try {
-      // Example: Perform platform-specific API calls here using connection credentials
-      // For now, we optimistically mark as published to complete the flow
       await updatePost(postId, { status: "published", published_at: new Date().toISOString() })
       return { success: true, method: "trigger-direct" }
     } catch (err: any) {
