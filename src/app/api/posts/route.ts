@@ -108,28 +108,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Schedule with Trigger.dev v3
+    // Schedule the post with the configured provider
+    let schedulingInfo: any = null
     try {
-      const { tasks } = await import('@trigger.dev/sdk/v3')
-      const { publishPostTask } = await import('@/trigger/publish-post')
-      
-      const now = new Date()
-      const scheduledDate = new Date(scheduled_at)
-      const delay = scheduledDate.getTime() - now.getTime()
+      const { schedulePost } = await import('@/lib/scheduler')
+      const webhookUrl = `${request.nextUrl.origin}/api/webhooks/publish-post`
 
-      if (delay > 0) {
-        await tasks.trigger("publish-post", { postId: data.id }, { delay: new Date(scheduled_at) });
-        console.log('Scheduled post with Trigger.dev:', data.id);
-      } else {
-        // Immediate trigger
-        await tasks.trigger("publish-post", { postId: data.id });
-      }
-
-    } catch (scheduleError) {
-      console.log('Trigger.dev scheduling failed (check TRIGGER_SECRET_KEY):', scheduleError)
+      const result = await schedulePost({
+        postId: data.id,
+        scheduledAt: new Date(scheduled_at),
+        webhookUrl,
+      })
+      schedulingInfo = result
+    } catch (scheduleError: any) {
+      console.warn('Scheduling not configured or failed:', scheduleError?.message || scheduleError)
+      schedulingInfo = { success: false, error: scheduleError?.message || 'Scheduling failed' }
     }
 
-    return NextResponse.json({ success: true, data }, { status: 201 })
+    return NextResponse.json({ success: true, data, scheduling: schedulingInfo }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },
