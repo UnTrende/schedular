@@ -20,9 +20,9 @@ export async function schedulePost(opts: SchedulePostOptions) {
     return schedulePostWithQStash(opts)
   }
 
-  // Trigger.dev v4 path using tasks.trigger
+  // Trigger.dev v3 path using tasks.trigger
   try {
-    const { tasks } = await import('@trigger.dev/sdk')
+    const { tasks } = await import('@trigger.dev/sdk/v3')
     const { publishPostTask } = await import('@/trigger/publish-post')
     
     const handle = await tasks.trigger(publishPostTask.id, {

@@ -1,4 +1,4 @@
-import { task } from "@trigger.dev/sdk";
+import { task } from "@trigger.dev/sdk/v3";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { OAUTH_PROVIDERS } from "@/lib/oauth-providers";
 import { Platform } from "@/types";
