@@ -14,7 +14,14 @@ export const OAUTH_PROVIDERS = {
     name: 'Facebook',
     authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
     tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
-    scopes: ['pages_manage_posts', 'pages_read_engagement', 'pages_show_list'],
+    scopes: [
+      'public_profile',
+      'email',
+      'pages_show_list',
+      'pages_read_engagement',
+      'pages_manage_posts',
+      'business_management'
+    ],
     clientIdEnv: 'FACEBOOK_APP_ID',
     clientSecretEnv: 'FACEBOOK_APP_SECRET',
   },
@@ -22,7 +29,14 @@ export const OAUTH_PROVIDERS = {
     name: 'Instagram',
     authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
     tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
-    scopes: ['instagram_basic', 'instagram_content_publish', 'pages_show_list'],
+    scopes: [
+      'public_profile',
+      'instagram_basic',
+      'instagram_content_publish',
+      'pages_show_list',
+      'pages_read_engagement',
+      'business_management'
+    ],
     clientIdEnv: 'FACEBOOK_APP_ID', // Instagram uses Facebook OAuth
     clientSecretEnv: 'FACEBOOK_APP_SECRET',
   },
