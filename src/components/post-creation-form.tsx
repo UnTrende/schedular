@@ -52,13 +52,18 @@ export function PostCreationForm() {
     setIsSubmitting(true)
 
     try {
+      // Convert local datetime string to UTC ISO string
+      // scheduledAt is in format "2026-01-02T14:30" (local timezone)
+      const localDate = new Date(scheduledAt)
+      const utcScheduledAt = localDate.toISOString()
+
       const response = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           content,
           platform,
-          scheduled_at: scheduledAt,
+          scheduled_at: utcScheduledAt,
           media_urls: mediaUrls,
         }),
       })

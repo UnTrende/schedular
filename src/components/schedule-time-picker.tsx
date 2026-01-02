@@ -14,11 +14,17 @@ export function ScheduleTimePicker({ value, onChange, minDate }: ScheduleTimePic
   const [isOpen, setIsOpen] = useState(false)
   const [tempValue, setTempValue] = useState(value)
 
-  // Get minimum datetime (5 minutes from now by default)
+  // Get minimum datetime (5 minutes from now by default) in local timezone
   const getMinDateTime = () => {
     const min = minDate || new Date()
     min.setMinutes(min.getMinutes() + 5)
-    return min.toISOString().slice(0, 16)
+    // Format for datetime-local input in user's local timezone
+    const year = min.getFullYear()
+    const month = String(min.getMonth() + 1).padStart(2, '0')
+    const day = String(min.getDate()).padStart(2, '0')
+    const hours = String(min.getHours()).padStart(2, '0')
+    const minutes = String(min.getMinutes()).padStart(2, '0')
+    return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
   const handleSave = () => {
@@ -26,23 +32,32 @@ export function ScheduleTimePicker({ value, onChange, minDate }: ScheduleTimePic
     setIsOpen(false)
   }
 
-  // Quick schedule options
+  // Quick schedule options (local timezone)
+  const formatLocalDateTime = (date: Date) => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    return `${year}-${month}-${day}T${hours}:${minutes}`
+  }
+
   const quickOptions = [
     { label: 'In 1 hour', getValue: () => {
       const date = new Date()
       date.setHours(date.getHours() + 1)
-      return date.toISOString().slice(0, 16)
+      return formatLocalDateTime(date)
     }},
     { label: 'Tomorrow 9 AM', getValue: () => {
       const date = new Date()
       date.setDate(date.getDate() + 1)
       date.setHours(9, 0, 0, 0)
-      return date.toISOString().slice(0, 16)
+      return formatLocalDateTime(date)
     }},
     { label: 'In 1 week', getValue: () => {
       const date = new Date()
       date.setDate(date.getDate() + 7)
-      return date.toISOString().slice(0, 16)
+      return formatLocalDateTime(date)
     }},
   ]
 
