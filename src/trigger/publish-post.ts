@@ -59,15 +59,63 @@ export const publishPostTask = task({
     try {
         console.log(`Publishing to ${post.platform}...`);
         
-        // --- SIMULATED PUBLISHING LOGIC ---
-        // (Replace this block with actual API calls to FB/Insta/Twitter)
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        // Real platform publishing logic
+        const accessToken = connection.encrypted_access_token; // Should be decrypted in production
         
-        // Example check for specific platforms (placeholders)
-        if (post.platform === 'facebook' && !connection.encrypted_access_token) {
-             throw new Error("Missing access token");
+        if (!accessToken) {
+          throw new Error("Missing access token for platform");
         }
-        // ----------------------------------
+
+        if (post.platform === 'facebook') {
+          // Facebook Graph API - Post to Page
+          const pageId = connection.platform_user_id; // The Facebook Page ID
+          
+          if (!pageId) {
+            throw new Error("Missing Facebook Page ID");
+          }
+
+          const fbUrl = `https://graph.facebook.com/v21.0/${pageId}/feed`;
+          const fbPayload: any = {
+            message: post.content,
+            access_token: accessToken,
+          };
+
+          // Add media if present
+          if (post.media_urls && post.media_urls.length > 0) {
+            // For single image
+            if (post.media_urls.length === 1) {
+              fbPayload.link = post.media_urls[0];
+            } else {
+              // For multiple images, use a different endpoint
+              console.log("Multiple media not implemented yet, posting text only");
+            }
+          }
+
+          const fbResponse = await fetch(fbUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fbPayload),
+          });
+
+          if (!fbResponse.ok) {
+            const errorData = await fbResponse.json();
+            throw new Error(`Facebook API error: ${JSON.stringify(errorData)}`);
+          }
+
+          const fbResult = await fbResponse.json();
+          console.log("Facebook post created:", fbResult.id);
+        } else if (post.platform === 'instagram') {
+          // Instagram publishing requires different flow (container creation + publish)
+          throw new Error("Instagram publishing not yet implemented");
+        } else if (post.platform === 'twitter') {
+          // Twitter API v2
+          throw new Error("Twitter publishing not yet implemented");
+        } else if (post.platform === 'linkedin') {
+          // LinkedIn API
+          throw new Error("LinkedIn publishing not yet implemented");
+        } else {
+          throw new Error(`Unsupported platform: ${post.platform}`);
+        }
 
         // 6. Update Post to Published
         const { error: updateError } = await supabase
