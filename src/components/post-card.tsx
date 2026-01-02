@@ -3,6 +3,7 @@ import { PlatformIcon } from '@/components/platform-icon'
 import { StatusBadge } from '@/components/status-badge'
 import { formatDateTime, formatRelativeTime, truncateText } from '@/lib/utils'
 import { ScheduledPost } from '@/types'
+import Image from 'next/image'
 
 interface PostCardProps {
   post: ScheduledPost
@@ -71,10 +72,13 @@ export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
                     muted
                   />
                 ) : (
-                  <img
+                  <Image
                     src={url}
                     alt={`Media ${index + 1}`}
                     className="w-full h-full object-cover"
+                    width={80}
+                    height={80}
+                    unoptimized
                     onError={(e) => {
                       // Fallback if image fails to load
                       e.currentTarget.style.display = 'none'
