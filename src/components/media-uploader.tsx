@@ -5,6 +5,7 @@ import { Button } from '@/components/ui'
 import { useToast } from '@/components/providers/toast-provider'
 import { FILE_UPLOAD } from '@/lib/constants'
 import { formatFileSize } from '@/lib/utils'
+import Image from 'next/image'
 
 interface MediaUploaderProps {
   onUploadComplete: (urls: string[]) => void
@@ -178,10 +179,13 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
                     muted
                   />
                 ) : (
-                  <img
+                  <Image
                     src={url}
                     alt={`Upload ${index + 1}`}
                     className="w-full h-full object-cover"
+                    width={200}
+                    height={200}
+                    unoptimized
                   />
                 )}
               </div>
