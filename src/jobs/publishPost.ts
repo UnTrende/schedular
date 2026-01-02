@@ -1,4 +1,4 @@
-import { job } from "trigger.dev/sdk"
+import { job } from "@trigger.dev/sdk"
 import { getPostById, updatePost } from "@/lib/db/posts"
 
 export const publishScheduledPost = job({

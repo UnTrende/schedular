@@ -1,4 +1,4 @@
-import { TriggerClient } from "trigger.dev/sdk"
+import { TriggerClient } from "@trigger.dev/sdk"
 
 const projectId = process.env.TRIGGER_PROJECT_ID
 const apiKey = process.env.TRIGGER_API_KEY || process.env.TRIGGER_SECRET_KEY

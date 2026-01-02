@@ -1,4 +1,4 @@
-import { createAppRoute } from "trigger.dev/nextjs"
+import { createAppRoute } from "@trigger.dev/nextjs"
 import { client } from "@/lib/trigger"
 import "@/jobs/publishPost"
 
