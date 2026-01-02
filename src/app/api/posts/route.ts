@@ -109,22 +109,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Schedule the post with QStash (if credentials are configured)
+    let schedulingInfo: any = null
     try {
-      const { schedulePostWithQStash } = await import('@/lib/schedule-post')
+      const { schedulePost } = await import('@/lib/scheduler')
       const webhookUrl = `${request.nextUrl.origin}/api/webhooks/publish-post`
-      
-      await schedulePostWithQStash({
+
+      const result = await schedulePost({
         postId: data.id,
         scheduledAt: new Date(scheduled_at),
         webhookUrl,
       })
-    } catch (scheduleError) {
-      console.log('QStash not configured, post created without scheduling:', scheduleError)
-      // Post is still created, just not scheduled with QStash
-      // This allows the app to work without QStash configuration
+      schedulingInfo = result
+    } catch (scheduleError: any) {
+      console.warn('Scheduling not configured or failed:', scheduleError?.message || scheduleError)
+      schedulingInfo = { success: false, error: scheduleError?.message || 'Scheduling failed' }
     }
 
-    return NextResponse.json({ success: true, data }, { status: 201 })
+    return NextResponse.json({ success: true, data, scheduling: schedulingInfo }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },

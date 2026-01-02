@@ -6,13 +6,19 @@ import { getPostById, updatePost } from '@/lib/db/posts'
 // Webhook called by QStash when it's time to publish a post
 export async function POST(request: NextRequest) {
   try {
-    // Verify QStash signature
+    // Verify signature from either Trigger.dev (shared secret) or QStash
+    const triggerSecret = request.headers.get('x-trigger-secret')
+    const expectedTriggerSecret = process.env.TRIGGER_WEBHOOK_SECRET
+
     const signature = request.headers.get('upstash-signature') || ''
     const body = await request.text()
-    
-    if (!verifyQStashSignature(signature, body)) {
+
+    const triggerAuthorized = !!expectedTriggerSecret && triggerSecret === expectedTriggerSecret
+    const qstashAuthorized = verifyQStashSignature(signature, body)
+
+    if (!triggerAuthorized && !qstashAuthorized) {
       return NextResponse.json(
-        { error: 'Invalid signature' },
+        { error: 'Unauthorized: invalid signature' },
         { status: 401 }
       )
     }
