@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { deleteConnection } from '@/lib/db/connections'
-import { supabase } from '@/lib/supabase/client'
+import { getSupabaseServerClient } from '@/lib/supabase/server'
 
 // DELETE /api/connections/[id]
 export async function DELETE(
@@ -19,9 +19,10 @@ export async function DELETE(
     }
 
     const connectionId = params.id
+    const supabase = getSupabaseServerClient()
 
-    // Verify connection belongs to user
-    const { data: connection } = await supabase()
+    // Verify connection belongs to user using Service Role (bypassing RLS issues on server)
+    const { data: connection } = await supabase
       .from('social_connections')
       .select('*')
       .eq('id', connectionId)
@@ -46,6 +47,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
+    console.error('Delete connection error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
