@@ -1,116 +1,102 @@
 # Social Scheduler
 
-A zero-budget social media scheduling application built with Next.js 14, designed to run entirely on free-tier services.
+A high-performance, fintech-grade social media scheduling application built with Next.js 14. Designed for precision, security, and scalability using a modern serverless stack.
+
+![Dashboard Preview](./design-assets/dashboard_page/screen.png)
 
 ## 🚀 Tech Stack
 
-- **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
-- **Authentication**: Clerk (10k MAU free tier)
-- **Database**: Supabase (500MB DB, 1GB storage free tier)
-- **File Storage**: Cloudflare R2 (10GB storage + 1M operations/month free)
-- **Job Scheduling**: Upstash QStash (10k messages/month free)
-- **Worker Service**: Fly.io ($5/mo credit for 200k API calls)
-- **Deployment**: Vercel (100GB bandwidth/month free)
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript
+- **UI System**: Tailwind CSS with "Fintech" aesthetic (Inter font, precision spacing)
+- **Authentication**: Clerk (Secure User Management)
+- **Database**: Supabase (PostgreSQL with Row Level Security)
+- **File Storage**: Cloudflare R2 (S3-compatible object storage)
+- **Job Scheduling**: Trigger.dev v3 (Serverless Task Scheduling) / Upstash QStash (Legacy/Fallback)
+- **Deployment**: Vercel
 
-## 📋 Prerequisites
+## ✨ Key Features
 
-Before you begin, ensure you have:
-- Node.js 18+ installed
-- npm or yarn package manager
-- Accounts created on the following services (all free tier):
-  - [Vercel](https://vercel.com/signup)
-  - [Supabase](https://supabase.com/dashboard)
-  - [Clerk](https://clerk.com/dashboard)
-  - [Upstash QStash](https://console.upstash.com/qstash)
-  - [Cloudflare R2](https://dash.cloudflare.com/r2)
-  - [Fly.io](https://fly.io/dashboard)
+- **Professional Dashboard**: High-contrast, data-dense UI optimized for productivity.
+- **Multi-Platform OAuth**: Secure connections to Facebook, Instagram, Twitter, and LinkedIn (Encryption at rest).
+- **Smart Scheduling**: Schedule posts with precision timing using Trigger.dev v3.
+- **Media Management**: Fast, secure uploads to Cloudflare R2 with instant previews.
+- **Role-Based Security**: Strict RLS policies ensuring data privacy.
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup
 
-1. **Clone the repository**
+### 1. Clone & Install
+```bash
+git clone <repository-url>
+cd social-scheduler
+npm install
+```
+
+### 2. Environment Setup
+Copy the example file and fill in your keys:
+```bash
+cp .env.local.example .env.local
+```
+
+**Required Keys:**
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL` & `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (Required for server-side operations)
+- `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`
+- `TRIGGER_SECRET_KEY` (For scheduling)
+- `FACEBOOK_APP_ID` & `FACEBOOK_APP_SECRET` (For OAuth)
+
+### 3. Database Migration
+Run the SQL schema provided in `supabase/schema.sql` in your Supabase SQL Editor to set up tables and RLS policies.
+
+### 4. Cloudflare R2 CORS
+To enable uploads, update your R2 Bucket CORS policy:
+```json
+[
+  {
+    "AllowedOrigins": ["http://localhost:3000", "https://your-vercel-domain.app"],
+    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3600
+  }
+]
+```
+
+### 5. Run Development Server
+```bash
+npm run dev
+```
+
+## 🚀 Deployment
+
+1. **Deploy to Vercel**: Push to your repository.
+2. **Deploy Trigger.dev Tasks**:
    ```bash
-   git clone <repository-url>
-   cd social-scheduler
+   npx trigger.dev@latest login
+   npx trigger.dev@latest deploy
    ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Setup environment variables**
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   
-   Fill in the required API keys in `.env.local`
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   *This ensures your scheduling tasks run in the cloud.*
 
 ## 📁 Project Structure
 
 ```
 social-scheduler/
 ├── src/
-│   ├── app/              # Next.js 14 App Router pages
-│   ├── components/       # React components
-│   ├── lib/             # Utility functions and configurations
-│   ├── types/           # TypeScript type definitions
-│   └── hooks/           # Custom React hooks
-├── public/              # Static assets
-└── ...config files
+│   ├── app/              # Next.js App Router (Routes & API)
+│   ├── components/       # Reusable UI Components
+│   ├── lib/              # Core Logic (DB, R2, OAuth)
+│   ├── trigger/          # Background Tasks (Publishing Logic)
+│   └── types/            # TypeScript Definitions
+├── design-assets/        # Original UI/UX References
+└── docs/                 # Detailed Tech Specs & Guides
 ```
 
-## 🔧 Configuration
+## 🔐 Security
 
-### Database Setup (Supabase)
-
-1. Go to your Supabase project SQL Editor
-2. Run the schema from `Social_Scheduler_Tech_Spec.md`
-3. Enable Row Level Security (RLS)
-4. Copy your project URL and anon key to `.env.local`
-
-### Authentication (Clerk)
-
-1. Create a new Clerk application
-2. Enable email/password and social login providers
-3. Copy your publishable and secret keys to `.env.local`
-
-### File Storage (Cloudflare R2)
-
-1. Create an R2 bucket named `social-scheduler`
-2. Generate API tokens
-3. Setup public access for the bucket
-4. Add credentials to `.env.local`
-
-## 🚦 Development Roadmap
-
-- [x] Part 1: Project Setup & Foundation
-- [ ] Part 2: Authentication Setup
-- [ ] Part 3: Database Setup
-- [ ] Part 4: Core Layout & Components
-- [ ] Part 5: Authentication Pages
-- [ ] Part 6: Dashboard & Post Creation
-- [ ] Part 7: File Upload & R2 Integration
-- [ ] Part 8: Social Connections Management
-- [ ] Part 9: Post Scheduling System
-- [ ] Part 10: Fly.io Worker & Publishing
+- **RLS Enabled**: Database tables are protected by Row Level Security.
+- **Encrypted Tokens**: OAuth tokens are encrypted before storage.
+- **Service Role**: Server-side operations use privileged keys strictly where necessary.
 
 ## 📝 License
 
 MIT
-
-## ⚠️ Important Notes
-
-- **Token Security**: All social media tokens are encrypted in the browser before storage
-- **Free Tier Monitoring**: Monitor your usage across all platforms to stay within limits
-- **Cost Kill Switches**: Implement alerts when approaching free tier limits
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read the contributing guidelines before submitting PRs.
