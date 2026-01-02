@@ -1,7 +1,7 @@
 import { defineConfig } from "@trigger.dev/sdk/v3";
 
 export default defineConfig({
-  project: "social-scheduler",
+  project: "proj_rxmzdhwhwhrfcctjkjdv",
   runtime: "node",
   logLevel: "log",
   // Set the maxDuration to 300 seconds (5 minutes)
