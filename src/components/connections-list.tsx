@@ -20,24 +20,90 @@ export function ConnectionsList() {
   const toast = useToast()
   const searchParams = useSearchParams()
 
+  const [pageSelectionModal, setPageSelectionModal] = useState<{
+    isOpen: boolean
+    pages: any[]
+    platform: Platform | null
+  }>({
+    isOpen: false,
+    pages: [],
+    platform: null,
+  })
+
   useEffect(() => {
     fetchConnections()
 
     // Handle OAuth callback
     const success = searchParams.get('success')
     const error = searchParams.get('error')
-    const platform = searchParams.get('platform')
+    const platform = searchParams.get('platform') as Platform | null
+    const action = searchParams.get('action')
 
     if (success === 'true' && platform) {
-      toast.success(`Successfully connected to ${PLATFORMS[platform as Platform].name}`)
-      // Remove query params
-      window.history.replaceState({}, '', '/connections')
+      if (action === 'select_page' && (platform === 'facebook' || platform === 'instagram')) {
+        // Fetch pages/accounts for selection
+        fetchPages(platform)
+      } else {
+        toast.success(`Successfully connected to ${PLATFORMS[platform].name}`)
+        window.history.replaceState({}, '', '/connections')
+      }
     } else if (error) {
       toast.error(`Failed to connect: ${error}`)
       window.history.replaceState({}, '', '/connections')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
+
+  const fetchPages = async (platform: Platform) => {
+    try {
+      const response = await fetch(`/api/connections/pages?platform=${platform}`)
+      const data = await response.json()
+
+      if (data.success && data.data && data.data.length > 0) {
+        setPageSelectionModal({
+          isOpen: true,
+          pages: data.data,
+          platform: platform
+        })
+      } else if (data.success && data.data.length === 0) {
+        toast.error(`No ${platform === 'facebook' ? 'Pages' : 'Business Accounts'} found.`)
+      } else {
+        toast.error(data.error || 'Failed to fetch pages')
+      }
+    } catch (error) {
+      toast.error('Error fetching pages')
+    }
+  }
+
+  const handleSelectPage = async (page: any) => {
+    if (!pageSelectionModal.platform) return
+
+    try {
+      const response = await fetch('/api/connections/pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          platform: pageSelectionModal.platform,
+          pageId: page.id || page.page_id, // FB uses id, IG uses page_id for mapping sometimes, check API response structure
+          pageToken: page.access_token,
+          pageName: page.name
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        toast.success(`Connected to ${page.name}`)
+        setPageSelectionModal({ isOpen: false, pages: [], platform: null })
+        fetchConnections() // Refresh list
+        window.history.replaceState({}, '', '/connections')
+      } else {
+        toast.error(data.error || 'Failed to select page')
+      }
+    } catch (error) {
+      toast.error('Error selecting page')
+    }
+  }
 
   const fetchConnections = async () => {
     setIsLoading(true)
@@ -184,6 +250,44 @@ export function ConnectionsList() {
           </div>
         </div>
       </Card>
+
+      {/* Page Selection Modal */}
+      <Modal
+        isOpen={pageSelectionModal.isOpen}
+        onClose={() => setPageSelectionModal({ isOpen: false, pages: [], platform: null })}
+        title={`Select ${pageSelectionModal.platform === 'facebook' ? 'Facebook Page' : 'Instagram Account'}`}
+        description="Choose the account you want to post to."
+        size="md"
+      >
+        <div className="mt-4 grid grid-cols-1 gap-3 max-h-[60vh] overflow-y-auto p-1">
+          {pageSelectionModal.pages.map((page) => (
+            <button
+              key={page.id}
+              onClick={() => handleSelectPage(page)}
+              className="flex items-center gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left group"
+            >
+              {page.image ? (
+                <img 
+                  src={page.image} 
+                  alt={page.name} 
+                  className="w-12 h-12 rounded-full object-cover border border-slate-100 dark:border-slate-600" 
+                />
+              ) : (
+                 <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-slate-400">flag</span>
+                 </div>
+              )}
+              <div className="flex-1">
+                <h4 className="font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                  {page.name}
+                </h4>
+                <p className="text-xs text-slate-500">ID: {page.id}</p>
+              </div>
+              <span className="material-symbols-outlined text-slate-400 group-hover:text-primary">chevron_right</span>
+            </button>
+          ))}
+        </div>
+      </Modal>
 
       {/* Delete Confirmation Modal */}
       <Modal

@@ -97,7 +97,14 @@ export async function GET(request: NextRequest) {
       platform_user_id: platformUserId,
     })
 
-    // Redirect back to connections page with success
+    // Redirect back to connections page
+    // For Meta platforms, we need the user to select a Page/Account
+    if (platform === 'facebook' || platform === 'instagram') {
+       return NextResponse.redirect(
+         `${request.nextUrl.origin}/connections?success=true&platform=${platform}&action=select_page`
+       )
+    }
+
     return NextResponse.redirect(
       `${request.nextUrl.origin}/connections?success=true&platform=${platform}`
     )
