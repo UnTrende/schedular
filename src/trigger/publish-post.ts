@@ -116,7 +116,7 @@ export const publishPostTask = task({
             throw new Error("Instagram requires at least one image or video");
           }
 
-          // Step 1: Create media container
+          // Step 1: Create media container (forced update)
           const mediaUrl = post.media_urls[0];
           const containerUrl = `https://graph.facebook.com/v21.0/${instagramAccountId}/media`;
           const containerPayload = {
