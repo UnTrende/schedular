@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, Button, Textarea, Label, Select } from '@/components/ui'
