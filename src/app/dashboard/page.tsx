@@ -85,7 +85,7 @@ export default function DashboardPage() {
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         title="Create New Post"
-        size="2xl"
+        size="xl"
       >
           <div className="mt-4">
             <PostCreationForm 
