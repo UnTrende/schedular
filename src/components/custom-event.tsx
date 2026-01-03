@@ -5,13 +5,15 @@ import { PostStatus } from '@/types'
 
 interface CustomEventProps {
   event: {
-    title: string
+    title: string;
+    start?: Date;
+    end?: Date;
     resource: {
-      platform: any
-      status: PostStatus
-      media_urls?: string[]
-    }
-  }
+      platform: any;
+      status: PostStatus;
+      media_urls?: string[];
+    };
+  };
 }
 
 export function CustomEvent({ event }: CustomEventProps) {
