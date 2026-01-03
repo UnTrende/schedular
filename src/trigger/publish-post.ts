@@ -105,8 +105,62 @@ export const publishPostTask = task({
           const fbResult = await fbResponse.json();
           console.log("Facebook post created:", fbResult.id);
         } else if (post.platform === 'instagram') {
-          // Instagram publishing requires different flow (container creation + publish)
-          throw new Error("Instagram publishing not yet implemented");
+          // Instagram Graph API - 2-step process
+          const instagramAccountId = connection.platform_user_id; // Instagram Business Account ID
+          
+          if (!instagramAccountId) {
+            throw new Error("Missing Instagram Business Account ID");
+          }
+
+          if (!post.media_urls || post.media_urls.length === 0) {
+            throw new Error("Instagram requires at least one image or video");
+          }
+
+          // Step 1: Create media container
+          const mediaUrl = post.media_urls[0];
+          const containerUrl = `https://graph.facebook.com/v21.0/${instagramAccountId}/media`;
+          const containerPayload = {
+            image_url: mediaUrl,
+            caption: post.content,
+            access_token: accessToken,
+          };
+
+          const containerResponse = await fetch(containerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(containerPayload),
+          });
+
+          if (!containerResponse.ok) {
+            const errorData = await containerResponse.json();
+            throw new Error(`Instagram container creation error: ${JSON.stringify(errorData)}`);
+          }
+
+          const containerResult = await containerResponse.json();
+          const containerId = containerResult.id;
+
+          console.log("Instagram container created:", containerId);
+
+          // Step 2: Publish the container
+          const publishUrl = `https://graph.facebook.com/v21.0/${instagramAccountId}/media_publish`;
+          const publishPayload = {
+            creation_id: containerId,
+            access_token: accessToken,
+          };
+
+          const publishResponse = await fetch(publishUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(publishPayload),
+          });
+
+          if (!publishResponse.ok) {
+            const errorData = await publishResponse.json();
+            throw new Error(`Instagram publish error: ${JSON.stringify(errorData)}`);
+          }
+
+          const publishResult = await publishResponse.json();
+          console.log("Instagram post published:", publishResult.id);
         } else if (post.platform === 'twitter') {
           // Twitter API v2
           throw new Error("Twitter publishing not yet implemented");
