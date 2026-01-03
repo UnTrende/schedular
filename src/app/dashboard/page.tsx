@@ -11,7 +11,7 @@ export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [calendarView, setCalendarView] = useState<'month' | 'week' | 'day'>('month')
 
-  const handleSelectSlot = (slotInfo: { start: Date }) => {
+  const handleSelectSlot = (slotInfo: { start: Date, end: Date }) => {
     setSelectedDate(slotInfo.start)
     setIsCreateModalOpen(true)
   }
