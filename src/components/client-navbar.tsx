@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { LayoutDashboard, ListTodo, Waypoints, PlusCircle } from 'lucide-react'
 
 const navLinks = [
-  { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-  { href: '/scheduled-posts', label: 'Posts', icon: 'list_alt' },
-  { href: '/connections', label: 'Connections', icon: 'hub' },
-  { href: '/create-post', label: 'New Post', icon: 'add_circle', isPrimary: true },
+  { href: '/dashboard', label: 'Calendar', icon: LayoutDashboard },
+  { href: '/scheduled-posts', label: 'Posts', icon: ListTodo },
+  { href: '/connections', label: 'Connections', icon: Waypoints },
+  { href: '/create-post', label: 'New Post', icon: PlusCircle, isPrimary: true },
 ]
 
 export function ClientNavbar() {
@@ -16,7 +17,7 @@ export function ClientNavbar() {
 
   return (
     <nav className="flex flex-col gap-2 px-2 py-4">
-      {navLinks.map(({ href, label, icon, isPrimary }) => {
+      {navLinks.map(({ href, label, icon: Icon, isPrimary }) => {
         const isActive = pathname.startsWith(href)
         
         if (isPrimary) {
@@ -24,9 +25,9 @@ export function ClientNavbar() {
              <Link
               key={href}
               href={href}
-              className="flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 transition-all shadow-md mt-4"
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 transition-all shadow-md mt-4"
             >
-              <span className="material-symbols-outlined text-xl">{icon}</span>
+              <Icon className="w-5 h-5" />
               <span>{label}</span>
             </Link>
           )
@@ -43,7 +44,7 @@ export function ClientNavbar() {
                 : 'hover:bg-slate-100 dark:hover:bg-slate-800'
             )}
           >
-            <span className="material-symbols-outlined text-xl">{icon}</span>
+            <Icon className="w-5 h-5" />
             <span>{label}</span>
           </Link>
         )
