@@ -50,7 +50,7 @@ export default function RootLayout({
         <body className={`${inter.variable} font-display antialiased`}>
           <ThemeProvider>
             <ToastProvider>
-              <div className="flex min-h-screen bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
+              <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 text-text-primary-light dark:text-text-primary-dark">
                 <Navbar />
                 <main className="flex-1">
                   {children}

@@ -15,7 +15,7 @@ import { LoadingSpinner } from './loading-spinner'
 
 // ... keep localizer
 
-export function CalendarView({ onSelectSlot }: { onSelectSlot: (slotInfo: any) => void }) {
+export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slotInfo: { start: Date; end: Date; }) => void; defaultView: 'month' | 'week' | 'day' }) {
   const [events, setEvents] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -46,12 +46,6 @@ export function CalendarView({ onSelectSlot }: { onSelectSlot: (slotInfo: any) =
     }
     fetchPosts()
   }, [])
-
-  const handleSelectSlot = (slotInfo: any) => {
-    // For now, just log the selected slot. Later, this will open the Create Post modal.
-    console.log('Selected slot:', slotInfo.start)
-    alert(`You selected the slot starting at: ${slotInfo.start}`)
-  }
   
   if (isLoading) {
     return (
@@ -70,8 +64,9 @@ export function CalendarView({ onSelectSlot }: { onSelectSlot: (slotInfo: any) =
         endAccessor="end"
         style={{ height: '100%' }}
         views={['month', 'week', 'day']}
+        defaultView={defaultView}
         selectable // Makes the calendar slots clickable
-        onSelectSlot={handleSelectSlot}
+        onSelectSlot={onSelectSlot}
         components={{
           event: CustomEvent, // Use our custom component for events
         }}

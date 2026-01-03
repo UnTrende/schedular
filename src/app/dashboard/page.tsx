@@ -9,6 +9,7 @@ import { PostCreationForm } from '@/components/post-creation-form'
 export default function DashboardPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [calendarView, setCalendarView] = useState<'month' | 'week' | 'day'>('month')
 
   const handleSelectSlot = (slotInfo: { start: Date }) => {
     setSelectedDate(slotInfo.start)
@@ -18,26 +19,51 @@ export default function DashboardPage() {
   const handlePostCreated = () => {
     setIsCreateModalOpen(false)
     // Here you would typically trigger a refetch of the calendar events
+    // For now, it will refresh on page reload/navigation
   }
 
   return (
     <>
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Header Bar */}
-        <header className="bg-white dark:bg-card-dark border-b border-slate-200 dark:border-slate-800 p-4 flex items-center justify-between flex-shrink-0">
+        <header className="bg-white/80 dark:bg-card-dark/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 p-4 flex items-center justify-between flex-shrink-0">
           <div>
             <h1 className="text-xl font-bold text-slate-900 dark:text-white">
               Content Calendar
             </h1>
           </div>
           <div className="flex items-center gap-4">
-            {/* Placeholder for view switchers */}
+            {/* View Switchers */}
             <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg">
-              <Button variant="ghost" size="sm" className="bg-white">Month</Button>
-              <Button variant="ghost" size="sm">Week</Button>
-              <Button variant="ghost" size="sm">List</Button>
+              <Button 
+                variant={calendarView === 'month' ? 'primary' : 'ghost'} 
+                size="sm" 
+                className="rounded-md"
+                onClick={() => setCalendarView('month')}
+              >
+                Month
+              </Button>
+              <Button 
+                variant={calendarView === 'week' ? 'primary' : 'ghost'} 
+                size="sm" 
+                className="rounded-md"
+                onClick={() => setCalendarView('week')}
+              >
+                Week
+              </Button>
+              <Button 
+                variant={calendarView === 'day' ? 'primary' : 'ghost'} 
+                size="sm" 
+                className="rounded-md"
+                onClick={() => setCalendarView('day')}
+              >
+                Day
+              </Button>
             </div>
-            <Button onClick={() => setIsCreateModalOpen(true)}>New Post</Button>
+            <Button onClick={() => setIsCreateModalOpen(true)} className="rounded-lg">
+                <span className="material-symbols-outlined text-xl">add</span>
+                New Post
+            </Button>
           </div>
         </header>
         
@@ -49,7 +75,7 @@ export default function DashboardPage() {
 
           {/* Main Calendar View */}
           <div className="flex-1 p-6 bg-slate-50 overflow-y-auto">
-              <CalendarView onSelectSlot={handleSelectSlot} />
+              <CalendarView onSelectSlot={handleSelectSlot} defaultView={calendarView} />
           </div>
         </div>
       </div>

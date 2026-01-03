@@ -8,7 +8,7 @@ export async function Navbar() {
   const { userId } = await auth()
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-white dark:bg-card-dark border-r border-slate-200 dark:border-slate-800 flex flex-col p-4">
+    <aside className="w-64 flex-shrink-0 bg-white/80 dark:bg-card-dark/80 backdrop-blur-lg border-r border-slate-200 dark:border-slate-800 flex flex-col p-4">
       {/* Logo */}
       <div className="p-4">
         <Link href={userId ? '/dashboard' : '/'} className="flex items-center gap-3">
