@@ -1,62 +1,53 @@
 'use client'
 
 import Link from 'next/link'
-import { useUser } from '@clerk/nextjs'
-import { UserButton } from './user-button'
-import { ThemeToggle } from './theme-toggle'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+
+const navLinks = [
+  { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { href: '/scheduled-posts', label: 'Posts', icon: 'list_alt' },
+  { href: '/connections', label: 'Connections', icon: 'hub' },
+  { href: '/create-post', label: 'New Post', icon: 'add_circle', isPrimary: true },
+]
 
 export function ClientNavbar() {
-  const { isSignedIn } = useUser()
+  const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between whitespace-nowrap border-b border-slate-100 dark:border-slate-800/50 bg-white/80 dark:bg-card-dark/80 px-6 py-4 shadow-sm backdrop-blur-md">
-      <Link href={isSignedIn ? '/dashboard' : '/'} className="flex items-center gap-3 group">
-        <div className="size-10 flex items-center justify-center bg-primary rounded-2xl text-white shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform duration-200">
-          <span className="material-symbols-outlined text-2xl">calendar_month</span>
-        </div>
-        <h2 className="text-xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
-          Social Scheduler
-        </h2>
-      </Link>
+    <nav className="flex flex-col gap-2 px-2 py-4">
+      {navLinks.map(({ href, label, icon, isPrimary }) => {
+        const isActive = pathname.startsWith(href)
+        
+        if (isPrimary) {
+          return (
+             <Link
+              key={href}
+              href={href}
+              className="flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 transition-all shadow-md mt-4"
+            >
+              <span className="material-symbols-outlined text-xl">{icon}</span>
+              <span>{label}</span>
+            </Link>
+          )
+        }
 
-      {isSignedIn ? (
-        <div className="flex items-center gap-6">
-          <nav className="hidden md:flex items-center gap-2">
-            <Link 
-              href="/dashboard" 
-              className="px-4 py-2 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-indigo-50 dark:hover:bg-slate-800 transition-all duration-200"
-            >
-              Dashboard
-            </Link>
-            <Link 
-              href="/scheduled-posts" 
-              className="px-4 py-2 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-indigo-50 dark:hover:bg-slate-800 transition-all duration-200"
-            >
-              Posts
-            </Link>
-            <Link 
-              href="/connections" 
-              className="px-4 py-2 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-indigo-50 dark:hover:bg-slate-800 transition-all duration-200"
-            >
-              Connections
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-700">
-            <ThemeToggle />
-            <UserButton />
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <Link href="/sign-in" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-            Sign In
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={cn(
+              'flex items-center gap-3 px-4 py-3 rounded-lg font-semibold text-slate-600 dark:text-slate-300 transition-all',
+              isActive
+                ? 'bg-blue-100/60 dark:bg-blue-900/20 text-primary dark:text-blue-300'
+                : 'hover:bg-slate-100 dark:hover:bg-slate-800'
+            )}
+          >
+            <span className="material-symbols-outlined text-xl">{icon}</span>
+            <span>{label}</span>
           </Link>
-          <Link href="/sign-up" className="px-6 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover:bg-indigo-500 transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40">
-            Get Started
-          </Link>
-        </div>
-      )}
-    </header>
+        )
+      })}
+    </nav>
   )
 }

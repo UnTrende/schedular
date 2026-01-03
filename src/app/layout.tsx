@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   },
 }
 
+import { Navbar } from '@/components/navbar'
+// ... (keep existing imports)
+
+// ... (keep metadata)
+
 export default function RootLayout({
   children,
 }: {
@@ -24,29 +29,32 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: '#2463eb',
+          colorPrimary: '#2c69ff', // Buffer Blue
           colorBackground: '#ffffff',
           colorInputBackground: '#f8fafc',
-          colorInputText: '#0f172a',
+          colorInputText: '#1a1a1a',
         },
         elements: {
-          formButtonPrimary: 'bg-primary hover:bg-blue-600',
-          card: 'shadow-xl',
+          formButtonPrimary: 'bg-primary hover:bg-blue-700',
+          card: 'shadow-lg',
         },
       }}
     >
       <html lang="en" suppressHydrationWarning>
         <head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300&display=swap"
             rel="stylesheet"
           />
         </head>
         <body className={`${inter.variable} font-display antialiased`}>
           <ThemeProvider>
             <ToastProvider>
-              <div className="min-h-screen bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
-                {children}
+              <div className="flex min-h-screen bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
+                <Navbar />
+                <main className="flex-1">
+                  {children}
+                </main>
               </div>
             </ToastProvider>
           </ThemeProvider>

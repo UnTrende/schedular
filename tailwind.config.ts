@@ -10,11 +10,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#6366f1', // Vibrant Indigo/Purple from design
-        'background-light': '#F3F4F6', // Soft light gray background
+        primary: '#2c69ff', // Buffer's Blue
+        'background-light': '#f5f5f5', // Subtle Gray App Frame
         'background-dark': '#0B1120',
         'card-dark': '#1E293B',
-        'text-primary-light': '#111827',
+        'text-primary-light': '#1a1a1a', // High-contrast dark gray
         'text-primary-dark': '#F3F4F6',
         'text-secondary-light': '#6B7280',
         'text-secondary-dark': '#9CA3AF',
