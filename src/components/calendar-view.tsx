@@ -60,8 +60,8 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
       <Calendar
         localizer={localizer}
         events={events}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor={(event) => event.start as Date}
+        endAccessor={(event) => event.end as Date}
         style={{ height: '100%' }}
         views={['month', 'week', 'day']}
         defaultView={defaultView}
