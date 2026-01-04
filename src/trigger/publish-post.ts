@@ -58,6 +58,13 @@ export const publishPostTask = task({
     try {
         console.log(`Publishing to ${post.platform}...`);
         
+        // Debug: Check if encryption key exists in env
+        const envKey = process.env.ENCRYPTION_KEY;
+        console.log(`Encryption Key Check: ${envKey ? `Exists (starts with ${envKey.substring(0, 4)}...)` : 'MISSING'}`);
+        
+        // Debug: Check the encrypted token from DB
+        console.log(`Encrypted Token Check: ${connection.encrypted_access_token ? `Exists (length: ${connection.encrypted_access_token.length})` : 'MISSING/EMPTY'}`);
+
         // Decrypt the access token
         const accessToken = decryptToken(connection.encrypted_access_token);
         

@@ -579,3 +579,31 @@
  GET /api/posts 200 in 243ms
  GET /api/connections 200 in 190ms
  GET /api/posts 200 in 179ms
+ ✓ Compiled in 9.8s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 566ms
+ ✓ Compiled in 9.6s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 386ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 2.7s (1959 modules)
+ GET /api/posts? 200 in 4313ms
+ GET /api/posts? 200 in 210ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 778ms (1961 modules)
+ GET /api/posts 200 in 2181ms
+ GET /api/posts? 200 in 246ms
+ GET /api/connections 200 in 2233ms
+ GET /api/posts 200 in 232ms
+ GET /api/posts? 200 in 221ms
+ GET /api/connections 200 in 278ms
+ GET /api/posts 200 in 223ms
+ GET /api/connections 200 in 230ms
+ GET /api/posts 200 in 312ms
+ GET /api/connections 200 in 323ms
+ ○ Compiling /api/upload/presigned-url ...
+ ✓ Compiled /api/upload/presigned-url in 7.7s (1977 modules)
+ POST /api/upload/presigned-url 200 in 8471ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1135ms (1959 modules)
+ GET /api/posts? 200 in 1948ms
+ GET /api/posts? 200 in 186ms
+[?25h

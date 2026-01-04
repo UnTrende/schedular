@@ -60,7 +60,7 @@ export function decryptToken(encryptedText: string): string {
 
     return decrypted
   } catch (error) {
-    console.error('Decryption failed:', error)
+    console.error(`Decryption failed for token (length: ${encryptedText?.length}):`, error)
     return '' // Return empty string on failure rather than throwing
   }
 }

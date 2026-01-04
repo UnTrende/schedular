@@ -61,7 +61,7 @@ Business Account: [Optional - Skip if you don't have one]
 
 2. **Valid OAuth Redirect URIs** - Add:
    ```
-   https://social-scheduler-xyz.vercel.app/api/oauth/callback
+   https://schedular-ten.vercel.app/api/oauth/callback
    ```
 
 3. **Important Settings**:
