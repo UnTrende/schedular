@@ -147,6 +147,36 @@ export const publishPostTask = task({
 
           console.log("Instagram container created:", containerId);
 
+          // Step 1.5: Poll for container status (Wait for media to be ready)
+          let isReady = false;
+          let retries = 0;
+          const maxRetries = 10;
+          
+          while (!isReady && retries < maxRetries) {
+            console.log(`Checking media status (Attempt ${retries + 1}/${maxRetries})...`);
+            
+            // Wait 3 seconds before checking
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            const statusUrl = `https://graph.facebook.com/v21.0/${containerId}?fields=status_code&access_token=${accessToken}`;
+            const statusResponse = await fetch(statusUrl);
+            const statusData = await statusResponse.json();
+            
+            if (statusData.status_code === 'FINISHED') {
+                isReady = true;
+                console.log("Media is ready for publishing.");
+            } else if (statusData.status_code === 'ERROR') {
+                throw new Error("Media processing failed by Instagram.");
+            } else {
+                console.log(`Media status: ${statusData.status_code}. Waiting...`);
+                retries++;
+            }
+          }
+
+          if (!isReady) {
+              throw new Error("Media processing timed out.");
+          }
+
           // Step 2: Publish the container
           const publishUrl = `https://graph.facebook.com/v21.0/${instagramAccountId}/media_publish`;
           const publishPayload = {
