@@ -3,14 +3,16 @@ import crypto from 'crypto'
 
 const ALGORITHM = 'aes-256-gcm'
 const IV_LENGTH = 16
-const KEY = process.env.ENCRYPTION_KEY
 
-if (!KEY) {
-  throw new Error('ENCRYPTION_KEY is not defined in environment variables')
+// Helper function to lazy-load and validate the encryption key
+function getKeyBuffer(): Buffer {
+  const KEY = process.env.ENCRYPTION_KEY
+  if (!KEY) {
+    // This error will now only be thrown at runtime if the key is missing
+    throw new Error('ENCRYPTION_KEY is not defined in environment variables at runtime.')
+  }
+  return Buffer.from(KEY, 'hex')
 }
-
-// Convert hex key to buffer
-const keyBuffer = Buffer.from(KEY, 'hex')
 
 /**
  * Encrypts a token using AES-256-GCM
@@ -19,6 +21,7 @@ const keyBuffer = Buffer.from(KEY, 'hex')
 export function encryptToken(text: string): string {
   if (!text) return ''
 
+  const keyBuffer = getKeyBuffer() // Access KEY when function is called
   const iv = crypto.randomBytes(IV_LENGTH)
   const cipher = crypto.createCipheriv(ALGORITHM, keyBuffer, iv)
 
@@ -38,6 +41,7 @@ export function decryptToken(encryptedText: string): string {
   if (!encryptedText) return ''
 
   try {
+    const keyBuffer = getKeyBuffer() // Access KEY when function is called
     const parts = encryptedText.split(':')
     if (parts.length !== 3) {
       throw new Error('Invalid encrypted format')
