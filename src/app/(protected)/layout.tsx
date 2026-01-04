@@ -3,6 +3,8 @@ import { Navbar } from '@/components/navbar'
 import { MobileNav } from '@/components/mobile-nav'
 import { UserButton } from '@/components/user-button'
 
+export const dynamic = 'force-dynamic'
+
 export default function ProtectedLayout({
     children,
 }: {
