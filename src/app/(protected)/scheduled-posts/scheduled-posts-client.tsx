@@ -5,9 +5,41 @@ import Link from 'next/link'
 import { Button } from '@/components/ui'
 import { PostList } from '@/components/post-list'
 import { PostStatus, ScheduledPost } from '@/types'
+import { useToast } from '@/components/providers/toast-provider'
+import { useRouter } from 'next/navigation'
 
 export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: ScheduledPost[] }) {
   const [statusFilter, setStatusFilter] = useState<PostStatus | 'all'>('all')
+  const [isClearing, setIsClearing] = useState(false)
+  const toast = useToast()
+  const router = useRouter()
+
+  const handleClearHistory = async () => {
+    if (!window.confirm('Are you sure you want to delete all published and failed posts? This action cannot be undone.')) {
+      return
+    }
+
+    setIsClearing(true)
+    try {
+      const response = await fetch('/api/posts/cleanup', {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        toast.success('History cleared successfully')
+        // Refresh the page data
+        router.refresh()
+        // Reload location to force re-fetch of initialPosts if router.refresh is not sufficient in this context
+        window.location.reload()
+      } else {
+        toast.error('Failed to clear history')
+      }
+    } catch (error) {
+      toast.error('An error occurred')
+    } finally {
+      setIsClearing(false)
+    }
+  }
 
   return (
     <div className="p-4 md:p-10">
@@ -31,7 +63,7 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
         </div>
 
         {/* Filters - Centered and with padding for shadows */}
-        <div className="mb-8 flex flex-wrap justify-center gap-3 p-1">
+        <div className="mb-8 flex flex-wrap justify-center items-center gap-3 p-1">
           <Button
             variant={statusFilter === 'all' ? 'secondary' : 'ghost'}
             size="sm"
@@ -66,6 +98,19 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
           >
             <span className="material-symbols-outlined text-base">error</span>
             Failed
+          </Button>
+
+          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block" />
+
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-full px-5 text-slate-500 hover:text-red-600 hover:bg-red-50"
+            onClick={handleClearHistory}
+            disabled={isClearing}
+          >
+            <span className="material-symbols-outlined text-base">delete_sweep</span>
+            {isClearing ? 'Clearing...' : 'Clear History'}
           </Button>
         </div>
 

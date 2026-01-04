@@ -41,6 +41,34 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
         toast.error(`File type ${file.type} is not supported`)
         return
       }
+
+      // Aspect Ratio Check for Images
+      if (file.type.startsWith('image/')) {
+        try {
+          const isValidRatio = await new Promise<boolean>((resolve) => {
+             const img = new window.Image()
+             img.src = URL.createObjectURL(file)
+             img.onload = () => {
+               const ratio = img.width / img.height
+               URL.revokeObjectURL(img.src)
+               // Instagram: 4:5 (0.8) to 1.91:1 (1.91)
+               if (ratio < 0.8 || ratio > 1.91) {
+                 resolve(false)
+               } else {
+                 resolve(true)
+               }
+             }
+             img.onerror = () => resolve(true) // Skip check on error
+          })
+
+          if (!isValidRatio) {
+            toast.error(`Image ${file.name} has invalid aspect ratio. Allowed: 4:5 to 1.91:1`)
+            return
+          }
+        } catch (e) {
+          // Ignore validation errors
+        }
+      }
     }
 
     setUploading(true)
