@@ -12,7 +12,7 @@ const localizer = dayjsLocalizer(dayjs)
 const DnDCalendar = withDragAndDrop(Calendar)
 
 import { CustomEvent } from './custom-event'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ScheduledPost } from '@/types'
 import { LoadingSpinner } from './loading-spinner'
 import { EventDetailsModal } from './event-details-modal'
@@ -28,7 +28,7 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
   const toast = useToast()
   const router = useRouter()
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const response = await fetch('/api/posts')
       const data = await response.json()
@@ -53,11 +53,11 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
 
   useEffect(() => {
     fetchPosts()
-  }, [])
+  }, [fetchPosts])
 
   const onEventDrop = async ({ event, start, end }: any) => {
     const { resource } = event
@@ -126,8 +126,8 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
         <DnDCalendar
           localizer={localizer}
           events={events}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor={(event: any) => event.start}
+          endAccessor={(event: any) => event.end}
           style={{ height: '100%' }}
           views={['month', 'week', 'day']}
           defaultView={defaultView}
