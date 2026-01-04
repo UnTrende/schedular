@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 interface PlatformIconProps {
   platform: Platform
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   showName?: boolean
   className?: string
 }
@@ -16,6 +16,7 @@ export function PlatformIcon({ platform, size = 'md', showName = false, classNam
     sm: 'text-base',
     md: 'text-xl',
     lg: 'text-3xl',
+    xl: 'text-4xl',
   }
 
   const colorClasses = {
