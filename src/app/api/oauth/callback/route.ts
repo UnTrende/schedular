@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { parseOAuthState, OAUTH_PROVIDERS } from '@/lib/oauth-providers'
 import { createConnection } from '@/lib/db/connections'
 import { Platform } from '@/types'
+import { encryptToken } from '@/lib/encryption'
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic'
@@ -92,7 +93,7 @@ export async function GET(request: NextRequest) {
     await createConnection({
       user_id: userId,
       platform,
-      encrypted_access_token: accessToken,
+      encrypted_access_token: encryptToken(accessToken), // Encrypt the token before saving
       platform_username: platformUsername,
       platform_user_id: platformUserId,
     })
