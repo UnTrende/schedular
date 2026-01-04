@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { PostCard } from '@/components/post-card'
 import { EmptyState } from '@/components/empty-state'
 import { Button, Modal } from '@/components/ui'
@@ -11,11 +11,14 @@ import Link from 'next/link'
 
 interface PostListProps {
   statusFilter?: PostStatus | 'all'
+  initialPosts?: ScheduledPost[]
 }
 
-export function PostList({ statusFilter = 'all' }: PostListProps) {
-  const [posts, setPosts] = useState<ScheduledPost[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListProps) {
+  const [posts, setPosts] = useState<ScheduledPost[]>(initialPosts)
+  const [isLoading, setIsLoading] = useState(initialPosts.length === 0)
+  const isFirstRender = useRef(true)
+  
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; post: ScheduledPost | null }>({
     isOpen: false,
     post: null,
@@ -23,6 +26,14 @@ export function PostList({ statusFilter = 'all' }: PostListProps) {
   const toast = useToast()
 
   useEffect(() => {
+    // Skip the first fetch if we already have initial data for the default filter
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      if (initialPosts.length > 0 && statusFilter === 'all') {
+        setIsLoading(false)
+        return
+      }
+    }
     fetchPosts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusFilter])

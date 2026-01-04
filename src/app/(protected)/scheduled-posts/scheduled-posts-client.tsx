@@ -4,38 +4,38 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import { PostList } from '@/components/post-list'
-import { PostStatus } from '@/types'
+import { PostStatus, ScheduledPost } from '@/types'
 
-export default function ScheduledPostsPage() {
+export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: ScheduledPost[] }) {
   const [statusFilter, setStatusFilter] = useState<PostStatus | 'all'>('all')
 
   return (
     <div className="p-4 md:p-10">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">
+        <div className="mb-10 flex flex-col sm:flex-row items-center justify-center sm:justify-between text-center sm:text-left gap-6">
+          <div className="space-y-1">
+            <h1 className="text-3xl md:text-4xl font-black text-gradient pb-1">
               Scheduled Posts
             </h1>
             <p className="text-slate-500 dark:text-slate-400 text-base md:text-lg">
               Manage and track your scheduled social media posts
             </p>
           </div>
-          <Link href="/create-post">
-            <Button variant="primary" size="md" className="rounded-lg">
+          <Link href="/create-post" className="w-full sm:w-auto">
+            <Button variant="primary" size="md" className="w-full sm:w-auto rounded-xl">
               <span className="material-symbols-outlined text-xl">add</span>
               <span>New Post</span>
             </Button>
           </Link>
         </div>
 
-        {/* Filters */}
-        <div className="mb-6 flex flex-wrap gap-2">
+        {/* Filters - Centered and with padding for shadows */}
+        <div className="mb-8 flex flex-wrap justify-center gap-3 p-1">
           <Button
             variant={statusFilter === 'all' ? 'secondary' : 'ghost'}
             size="sm"
-            className="rounded-md"
+            className="rounded-full px-5"
             onClick={() => setStatusFilter('all')}
           >
             All Posts
@@ -43,7 +43,7 @@ export default function ScheduledPostsPage() {
           <Button
             variant={statusFilter === 'pending' ? 'secondary' : 'ghost'}
             size="sm"
-            className="rounded-md"
+            className="rounded-full px-5"
             onClick={() => setStatusFilter('pending')}
           >
             <span className="material-symbols-outlined text-base">schedule</span>
@@ -52,7 +52,7 @@ export default function ScheduledPostsPage() {
           <Button
             variant={statusFilter === 'published' ? 'secondary' : 'ghost'}
             size="sm"
-            className="rounded-md"
+            className="rounded-full px-5"
             onClick={() => setStatusFilter('published')}
           >
             <span className="material-symbols-outlined text-base">check_circle</span>
@@ -61,7 +61,7 @@ export default function ScheduledPostsPage() {
           <Button
             variant={statusFilter === 'failed' ? 'secondary' : 'ghost'}
             size="sm"
-            className="rounded-md"
+            className="rounded-full px-5"
             onClick={() => setStatusFilter('failed')}
           >
             <span className="material-symbols-outlined text-base">error</span>
@@ -70,8 +70,9 @@ export default function ScheduledPostsPage() {
         </div>
 
         {/* Post List */}
-        <PostList statusFilter={statusFilter} />
+        <PostList statusFilter={statusFilter} initialPosts={initialPosts} />
       </div>
     </div>
   )
 }
+

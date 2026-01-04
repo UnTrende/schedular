@@ -2,45 +2,50 @@ import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 import { UserButton } from './user-button'
 import { ThemeToggle } from './theme-toggle'
-import { ClientNavbar } from './client-navbar' // We'll need this for active states
+import { ClientNavbar } from './client-navbar'
+import { cn } from '@/lib/utils'
+
+// Since we are in a client component for tooltips/interactive states often, 
+// let's make sure the structure is solid. 
+// AC-2: Icon only, Visually minimal, Thinnest persistent user element.
 
 export async function Navbar() {
-  const { userId } = await auth()
+  let userId = null
+  try {
+    const authData = await auth()
+    userId = authData.userId
+  } catch (e) {
+    console.error("Navbar Auth Error:", e)
+  }
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-white/80 dark:bg-card-dark/80 backdrop-blur-lg border-r border-slate-200 dark:border-slate-800 flex flex-col p-4">
+    <aside className="hidden md:flex flex-col items-center py-6 w-[70px] bg-gradient-to-b from-white/90 to-slate-50/90 dark:from-card-dark/90 dark:to-slate-900/90 backdrop-blur-xl border-r border-white/60 dark:border-slate-800 z-50 transition-all duration-300 shadow-[4px_0_24px_-4px_rgba(0,0,0,0.02)]">
       {/* Logo */}
-      <div className="p-4">
-        <Link href={userId ? '/dashboard' : '/'} className="flex items-center gap-3">
-          <div className="size-10 flex items-center justify-center bg-primary rounded-lg text-white">
+      <div className="mb-8">
+        <Link href={userId ? '/dashboard' : '/'} className="flex items-center justify-center group">
+          <div className="size-10 flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 rounded-xl text-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
             <span className="material-symbols-outlined text-2xl">calendar_month</span>
           </div>
-          <h2 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-            Scheduler
-          </h2>
         </Link>
       </div>
 
-      {/* Main Navigation */}
-      {userId ? (
+      {/* Main Navigation (Icons) */}
+      {userId && (
         <>
-          <ClientNavbar />
-          <div className="flex-grow"></div>
-          {/* Bottom Settings */}
-          <div className="flex items-center justify-between p-2">
-             <UserButton />
-             <ThemeToggle />
+          <div className="flex-1 w-full flex flex-col items-center gap-4">
+            {/* Manually rendering client navbar icons logic here or keeping ClientNavbar wrapper if it handles active states well. 
+                     Refactoring ClientNavbar to be vertical icon-only is key.
+                 */}
+            <ClientNavbar />
+          </div>
+
+          {/* Bottom Actions */}
+          <div className="flex flex-col items-center gap-4 mt-auto">
+            <ThemeToggle />
+            <div className="h-px w-8 bg-slate-200 dark:bg-slate-700" />
+            <UserButton />
           </div>
         </>
-      ) : (
-        <div className="flex-grow flex flex-col items-center justify-center gap-4">
-            <Link href="/sign-in" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">
-                Sign In
-            </Link>
-            <Link href="/sign-up" className="w-full text-center px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-blue-700 transition-colors shadow-md">
-                Get Started
-            </Link>
-        </div>
       )}
     </aside>
   )

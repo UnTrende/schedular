@@ -3,6 +3,7 @@ import { PlatformIcon } from '@/components/platform-icon'
 import { StatusBadge } from '@/components/status-badge'
 import { formatDateTime, formatRelativeTime, truncateText } from '@/lib/utils'
 import { ScheduledPost } from '@/types'
+import Image from 'next/image'
 
 interface PostCardProps {
   post: ScheduledPost
@@ -62,7 +63,7 @@ export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
             return (
               <div
                 key={index}
-                className="w-20 h-20 flex-shrink-0 bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden"
+                className="w-20 h-20 flex-shrink-0 bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden relative"
               >
                 {isVideo ? (
                   <video
@@ -71,19 +72,12 @@ export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
                     muted
                   />
                 ) : (
-                  <img
+                  <Image
                     src={url}
                     alt={`Media ${index + 1}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback if image fails to load
-                      e.currentTarget.style.display = 'none'
-                      e.currentTarget.parentElement!.innerHTML = `
-                        <div class="w-full h-full flex items-center justify-center">
-                          <span class="material-symbols-outlined text-slate-400">image</span>
-                        </div>
-                      `
-                    }}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
                   />
                 )}
               </div>

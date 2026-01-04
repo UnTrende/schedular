@@ -9,12 +9,29 @@
   
   body {
     font-family: var(--font-inter);
+    position: relative;
+    /* Bolder Mesh Gradient Background */
+    background: radial-gradient(circle at 0% 0%, rgba(44, 105, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+                var(--background-color, #ffffff);
   }
 
-  /* Global transition for smoother UI changes */
-  * {
-    transition: all 0.2s ease-in-out;
+  /* Finer Silk-Grain Texture Overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.015;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
+
+  /* Global transition removed for performance */
+
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
@@ -35,23 +52,33 @@
   }
 }
 
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-rose-500 to-amber-500;
+  }
+  
+  .glass-panel {
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-xl shadow-primary/5;
+  }
+}
+
 @layer components {
-  /* Button Base Styles */
+  /* Jewel-like Primary Button */
   .btn-primary {
-    @apply flex items-center justify-center rounded-lg px-6 py-3 bg-primary text-white font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-primary/20 focus:outline-none shadow-md shadow-primary/25 active:scale-[0.98];
+    @apply flex items-center justify-center rounded-xl px-6 py-3 bg-gradient-to-r from-primary to-teal-600 text-white font-bold hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 border border-white/20;
   }
 
   .btn-secondary {
-    @apply flex items-center justify-center rounded-lg px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98];
+    @apply flex items-center justify-center rounded-xl px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-primary/70 dark:hover:border-primary/70 shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] focus:ring-4 focus:ring-primary/10;
   }
 
-  /* Card Styles */
+  /* Rich Glass Card */
   .card {
-    @apply bg-white dark:bg-card-dark rounded-xl shadow-[0_1px_5px_rgba(0,0,0,0.05)] dark:shadow-none border border-slate-100 dark:border-slate-800 p-6;
+    @apply bg-white/80 dark:bg-card-dark/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none border border-white/60 dark:border-slate-800 p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-primary/20 dark:hover:border-primary/50;
   }
 
   /* Input Styles */
   .input-base {
-    @apply w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary/20 p-3;
+    @apply w-full rounded-xl border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/50 backdrop-blur-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 p-3 shadow-sm;
   }
 }

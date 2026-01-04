@@ -47,20 +47,18 @@ export function Modal({ isOpen, onClose, title, description, children, size = 'm
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Modal using glass-panel style */}
       <div
         className={cn(
-          'relative w-full bg-white dark:bg-slate-800 rounded-xl shadow-2xl',
-          'border border-slate-200 dark:border-slate-700',
-          'animate-in fade-in zoom-in-95 duration-200',
+          'relative w-full glass-panel rounded-2xl animate-in fade-in zoom-in-95 duration-300',
           sizes[size]
         )}
       >
         {/* Header */}
         {(title || description) && (
-          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+          <div className="px-6 py-4 border-b border-white/10 dark:border-white/5">
             {title && (
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-xl font-bold text-gradient">
                 {title}
               </h2>
             )}

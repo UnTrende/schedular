@@ -139,28 +139,23 @@ export async function getUpcomingPosts(userId: string, limit = 10) {
 }
 
 export async function getPostStats(userId: string) {
-  const { data: allPosts, error } = await getDb()
-    .from('scheduled_posts')
-    .select('status')
-    .eq('user_id', userId)
+  const db = getDb()
+  
+  const queries = [
+    db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+    db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'pending'),
+    db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'published'),
+    db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'failed')
+  ]
 
-  if (error) {
-    return {
-      total: 0,
-      pending: 0,
-      published: 0,
-      failed: 0,
-    }
+  const [totalRes, pendingRes, publishedRes, failedRes] = await Promise.all(queries)
+
+  return {
+    total: totalRes.count || 0,
+    pending: pendingRes.count || 0,
+    published: publishedRes.count || 0,
+    failed: failedRes.count || 0,
   }
-
-  const stats = {
-    total: allPosts.length,
-    pending: allPosts.filter(p => p.status === 'pending').length,
-    published: allPosts.filter(p => p.status === 'published').length,
-    failed: allPosts.filter(p => p.status === 'failed').length,
-  }
-
-  return stats
 }
 
 // Server-side operations (for API routes and scheduled jobs)

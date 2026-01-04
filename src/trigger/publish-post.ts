@@ -2,6 +2,7 @@ import { task } from "@trigger.dev/sdk/v3";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { OAUTH_PROVIDERS } from "@/lib/oauth-providers";
 import { Platform } from "@/types";
+import { decryptToken } from "@/lib/encryption";
 
 export const publishPostTask = task({
   id: "publish-post",
@@ -52,18 +53,16 @@ export const publishPostTask = task({
       throw new Error(errorMsg);
     }
 
-    // 5. Publish to Social Media (Mock logic for now, real logic requires decryption)
-    // In a real app, you would decrypt `connection.encrypted_access_token` here
-    // and use the specific API for Facebook/Instagram etc.
+    // 5. Publish to Social Media
     
     try {
         console.log(`Publishing to ${post.platform}...`);
         
-        // Real platform publishing logic
-        const accessToken = connection.encrypted_access_token; // Should be decrypted in production
+        // Decrypt the access token
+        const accessToken = decryptToken(connection.encrypted_access_token);
         
         if (!accessToken) {
-          throw new Error("Missing access token for platform");
+          throw new Error("Failed to decrypt access token or token is missing");
         }
 
         if (post.platform === 'facebook') {

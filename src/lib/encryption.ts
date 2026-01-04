@@ -1,72 +1,62 @@
-/**
- * Client-side encryption utilities for social media tokens
- * 
- * IMPORTANT: Tokens should be encrypted in the browser before sending to the server
- * This ensures end-to-end encryption - server never sees plaintext tokens
- * 
- * In production, you'd use the Web Crypto API:
- * https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto
- */
+import 'server-only'
+import crypto from 'crypto'
 
-// For now, this is a placeholder that shows the pattern
-// In Part 8, we'll implement proper encryption with Web Crypto API
+const ALGORITHM = 'aes-256-gcm'
+const IV_LENGTH = 16
+const KEY = process.env.ENCRYPTION_KEY
 
-export async function encryptToken(token: string, userKey: string): Promise<string> {
-  // TODO: Implement proper encryption in Part 8
-  // This is a placeholder - DO NOT use in production
-  
-  // In production, this should:
-  // 1. Derive encryption key from user's password/pin
-  // 2. Use AES-GCM for encryption
-  // 3. Return base64-encoded ciphertext
-  
-  console.warn('Using placeholder encryption - implement proper encryption before production')
-  return btoa(token) // Base64 encoding as placeholder
+if (!KEY) {
+  throw new Error('ENCRYPTION_KEY is not defined in environment variables')
 }
 
-export async function decryptToken(encryptedToken: string, userKey: string): Promise<string> {
-  // TODO: Implement proper decryption in Part 8
-  // This is a placeholder - DO NOT use in production
-  
-  console.warn('Using placeholder decryption - implement proper decryption before production')
-  return atob(encryptedToken) // Base64 decoding as placeholder
-}
+// Convert hex key to buffer
+const keyBuffer = Buffer.from(KEY, 'hex')
 
 /**
- * Generate a random encryption key for the user
- * In production, this should be:
- * 1. Derived from user's master password
- * 2. Stored securely (never sent to server)
- * 3. Used for encrypting/decrypting social tokens
+ * Encrypts a token using AES-256-GCM
+ * Returns format: iv:authTag:encryptedData
  */
-export function generateUserKey(): string {
-  // TODO: Implement proper key derivation in Part 8
-  return 'user-master-key-placeholder'
+export function encryptToken(text: string): string {
+  if (!text) return ''
+
+  const iv = crypto.randomBytes(IV_LENGTH)
+  const cipher = crypto.createCipheriv(ALGORITHM, keyBuffer, iv)
+
+  let encrypted = cipher.update(text, 'utf8', 'hex')
+  encrypted += cipher.final('hex')
+
+  const authTag = cipher.getAuthTag().toString('hex')
+
+  return `${iv.toString('hex')}:${authTag}:${encrypted}`
 }
 
 /**
- * Validate token format before encryption
+ * Decrypts a token using AES-256-GCM
+ * Expects format: iv:authTag:encryptedData
  */
-export function validateToken(token: string, platform: string): boolean {
-  if (!token || token.trim().length === 0) {
-    return false
-  }
+export function decryptToken(encryptedText: string): string {
+  if (!encryptedText) return ''
 
-  // Platform-specific validation
-  switch (platform) {
-    case 'twitter':
-      // Twitter tokens are typically long strings
-      return token.length > 20
-    case 'facebook':
-      // Facebook tokens are also long
-      return token.length > 20
-    case 'instagram':
-      // Instagram uses Facebook tokens
-      return token.length > 20
-    case 'linkedin':
-      // LinkedIn tokens
-      return token.length > 20
-    default:
-      return false
+  try {
+    const parts = encryptedText.split(':')
+    if (parts.length !== 3) {
+      throw new Error('Invalid encrypted format')
+    }
+
+    const [ivHex, authTagHex, encryptedHex] = parts
+
+    const iv = Buffer.from(ivHex, 'hex')
+    const authTag = Buffer.from(authTagHex, 'hex')
+    const decipher = crypto.createDecipheriv(ALGORITHM, keyBuffer, iv)
+
+    decipher.setAuthTag(authTag)
+
+    let decrypted = decipher.update(encryptedHex, 'hex', 'utf8')
+    decrypted += decipher.final('utf8')
+
+    return decrypted
+  } catch (error) {
+    console.error('Decryption failed:', error)
+    return '' // Return empty string on failure rather than throwing
   }
 }

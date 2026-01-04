@@ -1,0 +1,581 @@
+
+> social-scheduler@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ○ Compiling /src/middleware ...
+ ✓ Compiled /src/middleware in 622ms (227 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 7.3s (1781 modules)
+ HEAD / 200 in 7813ms
+ GET / 307 in 2964ms
+ ✓ Compiled in 901ms (759 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 7.1s (2728 modules)
+ GET /dashboard 200 in 7390ms
+ ✓ Compiled /_not-found in 440ms (2704 modules)
+ GET /api/posts 404 in 568ms
+ GET /api/connections 404 in 569ms
+ GET /api/posts 404 in 573ms
+ GET /api/connections 404 in 575ms
+ ○ Compiling /scheduled-posts ...
+ ✓ Compiled /scheduled-posts in 652ms (2718 modules)
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1677ms (1952 modules)
+ GET /api/posts? 200 in 3012ms
+ GET /api/posts? 200 in 3037ms
+ ○ Compiling /api/connections ...
+ GET /api/posts 200 in 713ms
+ ✓ Compiled /api/connections in 723ms (1955 modules)
+ GET /api/posts 200 in 1667ms
+ GET /api/connections 200 in 1725ms
+ GET /api/connections 200 in 1978ms
+ ○ Compiling /connections ...
+ ✓ Compiled /connections in 1800ms (3182 modules)
+ GET /api/posts? 200 in 676ms
+ GET /api/posts? 200 in 678ms
+ GET /api/posts 200 in 173ms
+ GET /api/connections 200 in 187ms
+ GET /api/connections 200 in 199ms
+ GET /api/posts 200 in 515ms
+ GET / 307 in 107ms
+ GET /dashboard 200 in 68ms
+ GET /api/connections 200 in 330ms
+ GET /api/posts 200 in 366ms
+ GET /api/posts 200 in 323ms
+ GET /api/connections 200 in 386ms
+ ⚠ Found a change in next.config.js. Restarting the server to apply the changes...
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ✓ Compiled /src/middleware in 327ms (227 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 6.1s (2702 modules)
+ GET /dashboard 200 in 6798ms
+ ✓ Compiled in 844ms (1222 modules)
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 2.6s (1526 modules)
+ ✓ Compiled (1937 modules)
+ GET /api/posts 200 in 5161ms
+ GET /api/posts 200 in 5177ms
+ GET /api/connections 200 in 5199ms
+ GET /api/connections 200 in 5210ms
+ ○ Compiling /scheduled-posts ...
+ ✓ Compiled /connections in 5.3s (3166 modules)
+ GET /connections?_rsc=1sbuq 200 in 45ms
+ GET /api/connections 200 in 229ms
+ GET /api/connections 200 in 232ms
+ GET /api/posts 200 in 275ms
+ GET /api/connections 200 in 304ms
+ GET /api/connections 200 in 284ms
+ GET /api/posts 200 in 274ms
+ GET /connections?_rsc=1b4fm 200 in 34ms
+ GET /api/connections 200 in 336ms
+ GET /api/connections 200 in 316ms
+ GET /api/connections 200 in 177ms
+ GET /api/posts 200 in 184ms
+ GET /api/posts 200 in 203ms
+ GET /api/connections 200 in 220ms
+ GET /api/posts? 200 in 161ms
+ GET /api/posts? 200 in 169ms
+ GET /api/posts 200 in 155ms
+ GET /api/connections 200 in 184ms
+ GET /api/connections 200 in 217ms
+ GET /api/posts 200 in 235ms
+ GET /api/posts? 200 in 196ms
+ GET /api/posts? 200 in 213ms
+ GET /api/posts?status=pending 200 in 170ms
+ GET /api/posts?status=published 200 in 160ms
+ GET /api/posts?status=failed 200 in 269ms
+ GET /api/connections 200 in 183ms
+ GET /api/posts 200 in 194ms
+ GET /api/posts 200 in 209ms
+ GET /api/connections 200 in 218ms
+ ✓ Compiled in 572ms (1230 modules)
+ GET /dashboard?_rsc=syt8b 200 in 40ms
+ ✓ Compiled in 727ms (1762 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 1000ms (2688 modules)
+ GET /dashboard?_rsc=syt8b 200 in 1203ms
+ ✓ Compiled /api/posts in 349ms (1526 modules)
+ ✓ Compiled (1937 modules)
+ GET /api/posts 200 in 1484ms
+ GET /api/posts 200 in 1437ms
+ GET /api/connections 200 in 1479ms
+ GET /api/connections 200 in 1504ms
+ ✓ Compiled in 1618ms (3160 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 81ms
+ GET /api/connections 200 in 249ms
+ GET /api/posts 200 in 236ms
+ GET /api/posts 200 in 266ms
+ GET /api/connections 200 in 256ms
+ ✓ Compiled in 864ms (3159 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 54ms
+ GET /api/connections 200 in 245ms
+ GET /api/posts 200 in 238ms
+ GET /api/connections 200 in 227ms
+ GET /api/posts 200 in 242ms
+ ✓ Compiled in 317ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 21ms
+ ✓ Compiled in 272ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 21ms
+ ✓ Compiled in 272ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 23ms
+ ✓ Compiled in 261ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 17ms
+ ✓ Compiled in 203ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 34ms
+ GET /dashboard?_rsc=1i0oq 200 in 152ms
+ ✓ Compiled in 2.1s (2915 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 162ms
+ ✓ Compiled in 246ms (1222 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 27ms
+ GET /dashboard?_rsc=1i0oq 200 in 40ms
+ ✓ Compiled in 673ms (2929 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 42ms
+ GET /dashboard 200 in 332ms
+ ✓ Compiled /api/posts in 448ms (1526 modules)
+ ✓ Compiled (1937 modules)
+ GET /api/posts 200 in 2464ms
+ GET /api/posts 200 in 2513ms
+ GET /api/connections 200 in 2488ms
+ GET /api/connections 200 in 2540ms
+ ○ Compiling /scheduled-posts ...
+ ✓ Compiled /scheduled-posts in 1579ms (3160 modules)
+ GET /scheduled-posts?_rsc=1mk54 200 in 284ms
+ ○ Compiling /connections ...
+ ✓ Compiled /connections in 710ms (3167 modules)
+ GET /api/posts? 200 in 219ms
+ GET /api/posts? 200 in 257ms
+ GET /scheduled-posts 200 in 246ms
+ GET /api/posts? 200 in 229ms
+ GET /api/posts? 200 in 244ms
+ GET /api/posts 200 in 360ms
+ GET /api/posts 200 in 344ms
+ GET /api/connections 200 in 395ms
+ GET /api/connections 200 in 368ms
+ GET /api/posts? 200 in 280ms
+ GET /api/posts? 200 in 297ms
+ GET /connections?_rsc=1hy8k 200 in 212ms
+ ○ Compiling /create-post ...
+ ✓ Compiled /create-post in 1071ms (3175 modules)
+ GET /create-post?_rsc=1ljsa 200 in 31ms
+ GET /api/connections 200 in 246ms
+ GET /api/connections 200 in 288ms
+ GET /api/posts 200 in 335ms
+ GET /api/posts 200 in 314ms
+ GET /api/posts 200 in 470ms
+ GET /api/posts 200 in 493ms
+ GET /api/connections 200 in 502ms
+ GET /api/connections 200 in 528ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1136ms (2767 modules)
+ GET / 200 in 1435ms
+ ○ Compiling /sign-in/[[...sign-in]] ...
+ ✓ Compiled /sign-in/[[...sign-in]] in 1170ms (2771 modules)
+ GET /sign-in/SignIn_clerk_catchall_check_1767488781003 200 in 66ms
+ ○ Compiling /sign-up/[[...sign-up]] ...
+ ✓ Compiled /sign-up/[[...sign-up]] in 1026ms (2773 modules)
+ GET /sign-up/SignUp_clerk_catchall_check_1767488791413 200 in 73ms
+ GET /sign-in/SignIn_clerk_catchall_check_1767488795944 200 in 33ms
+ GET /sign-in/factor-one/SignIn_clerk_catchall_check_1767488801617 200 in 45ms
+ POST /sign-in/factor-one 200 in 35ms
+ GET /dashboard?_rsc=1vlq1 200 in 16ms
+ ✓ Compiled /api/posts in 361ms (1555 modules)
+ ✓ Compiled (1965 modules)
+ GET /dashboard?_rsc=z7ej8 200 in 2371ms
+ GET /api/posts 200 in 2922ms
+ GET /api/connections 200 in 2947ms
+ GET /api/posts 200 in 500ms
+ GET /api/connections 200 in 505ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 408ms
+ GET /api/posts? 200 in 162ms
+ GET /api/posts? 200 in 155ms
+ GET /connections?_rsc=1hy8k 200 in 166ms
+ ○ Compiling /create-post ...
+ ✓ Compiled /create-post in 891ms (1971 modules)
+ GET /create-post?_rsc=1ljsa 200 in 35ms
+ GET /api/posts 200 in 233ms
+ GET /api/connections 200 in 246ms
+ GET /api/connections 200 in 237ms
+ GET /api/posts 200 in 257ms
+ GET /connections?_rsc=1tjfv 200 in 228ms
+ ✓ Compiled in 2.3s (2775 modules)
+ GET /connections?_rsc=18v2r 200 in 640ms
+ ✓ Compiled in 1179ms (2775 modules)
+ GET /connections?_rsc=18v2r 200 in 240ms
+ ✓ Compiled in 829ms (2775 modules)
+ GET /connections?_rsc=18v2r 200 in 732ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 3.1s (1952 modules)
+ ✓ Compiled (1954 modules)
+ GET /api/posts 200 in 5195ms
+ GET /api/connections 200 in 5263ms
+ GET /api/posts 200 in 401ms
+ GET /api/connections 200 in 406ms
+ ○ Compiling /scheduled-posts ...
+ ✓ Compiled /scheduled-posts in 1272ms (1962 modules)
+ GET /scheduled-posts?_rsc=ji7pu 200 in 446ms
+ GET /api/posts? 200 in 459ms
+ GET /api/posts? 200 in 472ms
+ GET /api/connections 200 in 200ms
+ GET /api/posts 200 in 244ms
+ GET /api/connections 200 in 227ms
+ GET /api/posts 200 in 221ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1158ms (2764 modules)
+ GET /api/posts 404 in 1476ms
+ ○ Compiling / ...
+ ✓ Compiled / in 711ms (1548 modules)
+ GET / 200 in 846ms
+ GET /dashboard?_rsc=z7ej8 200 in 38ms
+ GET /dashboard 200 in 273ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 863ms (1543 modules)
+ ✓ Compiled /scheduled-posts in 0ms (1954 modules)
+ ✓ Compiled in 1ms (1962 modules)
+ ✓ Compiled in 1ms (1962 modules)
+ GET /api/connections 200 in 6552ms
+ ✓ Compiled in 0ms (1962 modules)
+ GET /api/posts 200 in 6829ms
+ ✓ Compiled in 1ms (1962 modules)
+ ✓ Compiled in 0ms (1962 modules)
+ ✓ Compiled in 0ms (1962 modules)
+ ✓ Compiled in 0ms (1962 modules)
+ GET /api/posts 200 in 3384ms
+ GET /api/connections 200 in 3849ms
+ GET /scheduled-posts?_rsc=1q6iy 200 in 3755ms
+ GET /scheduled-posts?_rsc=1q6iy 200 in 179ms
+ GET /api/posts? 200 in 371ms
+ GET /api/posts? 200 in 239ms
+ GET /api/posts 200 in 255ms
+ GET /api/connections 200 in 314ms
+ GET /api/posts 200 in 266ms
+ GET /api/connections 200 in 244ms
+ GET /api/posts? 200 in 461ms
+ GET /api/posts? 200 in 199ms
+ GET /create-post?_rsc=1ljsa 200 in 24ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 5.9s (3188 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 7612ms
+ GET /_next/static/css/app/(protected)/dashboard/react-big-calendar.css.map 404 in 1529ms
+ GET /_next/static/css/app/(protected)/dashboard/react-big-calendar.css.map 404 in 164ms
+ GET /api/connections 200 in 485ms
+ GET /api/posts 200 in 507ms
+ GET /api/posts 200 in 486ms
+ GET /api/connections 200 in 556ms
+ GET /api/connections 200 in 174ms
+ GET /api/connections 200 in 184ms
+ GET /scheduled-posts?_rsc=1y5cf 200 in 219ms
+ GET /api/posts? 200 in 175ms
+ GET /api/posts? 200 in 312ms
+ GET /create-post?_rsc=1x4zl 200 in 78ms
+ ✓ Compiled in 5.6s (2782 modules)
+ GET /create-post?_rsc=1p664 200 in 1043ms
+ ✓ Compiled in 3s (2782 modules)
+ GET /create-post?_rsc=1p664 200 in 181ms
+ ✓ Compiled in 3s (2782 modules)
+ GET /create-post?_rsc=1p664 200 in 287ms
+ GET /create-post 200 in 1279ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1974ms (2771 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 2232ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 3.4s (1959 modules)
+ ✓ Compiled (1961 modules)
+ GET /api/posts 200 in 9177ms
+ GET /api/connections 200 in 9214ms
+ GET /api/posts 200 in 311ms
+ GET /api/connections 200 in 318ms
+ ✓ Compiled in 4.2s (2782 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 350ms
+ GET /dashboard 200 in 568ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 1287ms (1958 modules)
+ ✓ Compiled (1960 modules)
+ GET /api/posts 200 in 3352ms
+ GET /api/connections 200 in 3358ms
+ GET /api/posts 200 in 312ms
+ GET /api/connections 200 in 316ms
+ GET /api/connections 200 in 218ms
+ GET /api/connections 200 in 182ms
+ GET /api/connections 200 in 284ms
+ GET /api/connections 200 in 345ms
+ GET /api/connections 200 in 267ms
+ GET /api/connections 200 in 272ms
+ ✓ Compiled in 7.5s (2782 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 228ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 588ms (1550 modules)
+ GET /api/connections 200 in 1253ms
+ GET /api/connections 200 in 245ms
+ ✓ Compiled in 5.8s (2787 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 266ms
+ GET /dashboard 200 in 1168ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 1741ms (1958 modules)
+ ✓ Compiled (1960 modules)
+ GET /api/posts 200 in 3992ms
+ GET /api/connections 200 in 4025ms
+ GET /api/posts 200 in 389ms
+ GET /api/connections 200 in 435ms
+ GET /api/connections 200 in 221ms
+ GET /api/connections 200 in 253ms
+ GET /api/connections 200 in 355ms
+ GET /api/connections 200 in 271ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 251ms
+ GET /api/posts? 200 in 267ms
+ GET /api/posts? 200 in 278ms
+ GET /connections?_rsc=1hy8k 200 in 292ms
+ GET /create-post?_rsc=1ljsa 200 in 21ms
+ GET /api/connections 200 in 235ms
+ GET /api/posts 200 in 225ms
+ GET /api/posts 200 in 432ms
+ GET /api/connections 200 in 465ms
+ ✓ Compiled in 2s (2782 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 202ms
+ GET /dashboard 200 in 554ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1319ms (1550 modules)
+ ✓ Compiled (1960 modules)
+ GET /api/posts 200 in 3225ms
+ GET /api/connections 200 in 3248ms
+ GET /api/posts 200 in 293ms
+ GET /api/connections 200 in 311ms
+ GET /api/connections 200 in 200ms
+ GET /api/connections 200 in 417ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 236ms
+ GET /api/posts? 200 in 302ms
+ GET /create-post?_rsc=1ljsa 200 in 25ms
+ GET /api/posts? 200 in 202ms
+ GET /connections?_rsc=1hy8k 200 in 249ms
+ GET /api/posts? 200 in 313ms
+ GET /api/posts? 200 in 378ms
+ GET /api/posts 200 in 188ms
+ GET /api/connections 200 in 262ms
+ GET /api/posts 200 in 218ms
+ GET /api/connections 200 in 175ms
+ GET /api/connections 200 in 202ms
+ GET /api/connections 200 in 360ms
+ ✓ Compiled in 3.7s (2782 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 316ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 2.1s (1550 modules)
+ GET /api/connections 200 in 2893ms
+ GET /api/connections 200 in 238ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 803ms (1960 modules)
+ GET /api/posts 200 in 2391ms
+ GET /api/connections 200 in 2408ms
+ GET /api/posts 200 in 426ms
+ GET /api/connections 200 in 442ms
+ GET /api/connections 200 in 231ms
+ GET /api/connections 200 in 207ms
+ ✓ Compiled in 2.7s (2782 modules)
+ GET /connections?_rsc=1lkme 200 in 991ms
+ GET /connections 200 in 1055ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 1037ms (1958 modules)
+ ✓ Compiled (1960 modules)
+ GET /api/posts 200 in 2225ms
+ GET /api/connections 200 in 2234ms
+ GET /api/posts 200 in 192ms
+ GET /api/connections 200 in 205ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 235ms
+ GET /api/posts? 200 in 342ms
+ GET /api/posts? 200 in 157ms
+ GET /create-post?_rsc=1ljsa 200 in 29ms
+ GET /api/posts 200 in 213ms
+ GET /api/connections 200 in 245ms
+ GET /api/posts 200 in 178ms
+ GET /api/connections 200 in 165ms
+ ✓ Compiled in 7.4s (2782 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 577ms
+ GET /dashboard 200 in 597ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1158ms (1550 modules)
+ ✓ Compiled (1960 modules)
+ GET /api/posts 200 in 2840ms
+ GET /api/connections 200 in 2916ms
+ GET /api/posts 200 in 381ms
+ GET /api/connections 200 in 385ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 590ms
+ GET /api/posts? 200 in 204ms
+ GET /api/posts? 200 in 266ms
+ ✓ Compiled in 8.5s (2782 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 917ms
+ ✓ Compiled in 5.3s (2782 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 487ms
+ ✓ Compiled in 6.3s (2782 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 542ms
+ GET /scheduled-posts 200 in 827ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1765ms (1958 modules)
+ GET /api/posts? 200 in 2380ms
+ GET /api/posts? 200 in 465ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 2.7s (1960 modules)
+ GET /api/posts 200 in 4082ms
+ GET /api/connections 200 in 4143ms
+ GET /api/posts 200 in 200ms
+ GET /api/connections 200 in 250ms
+ GET /api/connections 200 in 272ms
+ GET /api/connections 200 in 196ms
+ GET /connections?_rsc=1hy8k 200 in 485ms
+ GET /api/posts 200 in 269ms
+ GET /api/connections 200 in 307ms
+ GET /api/posts 200 in 517ms
+ GET /api/connections 200 in 553ms
+ GET /api/connections 200 in 439ms
+ GET /api/connections 200 in 250ms
+ GET /scheduled-posts?_rsc=1y5cf 200 in 225ms
+ GET /api/posts? 200 in 447ms
+ GET /api/posts? 200 in 281ms
+ ✓ Compiled in 4.6s (2783 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 603ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 650ms (1959 modules)
+ GET /api/posts? 200 in 1282ms
+ GET /api/posts? 200 in 278ms
+ ✓ Compiled in 3.9s (2783 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 613ms
+ GET /scheduled-posts 200 in 662ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 915ms (1959 modules)
+ GET /api/posts? 200 in 2152ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 3.1s (1961 modules)
+ GET /api/connections 200 in 4451ms
+ GET /api/posts? 200 in 3311ms
+ GET /api/connections 200 in 211ms
+ GET /api/posts 200 in 256ms
+ GET /api/connections 200 in 297ms
+ GET /api/posts 200 in 237ms
+ GET /api/connections 200 in 254ms
+ ✓ Compiled in 5.6s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 454ms
+ ✓ Compiled in 3.4s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 159ms
+ ✓ Compiled in 2.3s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 269ms
+ ✓ Compiled in 5s (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 140ms
+ ✓ Compiled in 1581ms (2783 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 133ms
+ GET /dashboard 200 in 456ms
+ ○ Compiling /api/connections ...
+ ✓ Compiled /api/connections in 2.7s (1959 modules)
+ ✓ Compiled (1961 modules)
+ GET /api/posts 200 in 4850ms
+ GET /api/connections 200 in 4860ms
+ GET /api/posts 200 in 567ms
+ GET /api/connections 200 in 593ms
+ GET /api/connections 200 in 508ms
+ GET /api/connections 200 in 241ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 271ms
+ GET /api/posts? 200 in 211ms
+ GET /api/posts? 200 in 338ms
+ GET /connections?_rsc=1hy8k 200 in 228ms
+ GET /create-post?_rsc=1ljsa 200 in 33ms
+ GET /api/posts? 200 in 232ms
+ GET /api/posts? 200 in 297ms
+ GET /api/connections 200 in 197ms
+ GET /api/posts 200 in 386ms
+ GET /api/connections 200 in 209ms
+ GET /api/posts 200 in 192ms
+ GET /api/connections 200 in 450ms
+ GET /api/connections 200 in 316ms
+ ✓ Compiled in 2.2s (2788 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 260ms
+ GET /api/connections 200 in 451ms
+ GET /api/connections 200 in 388ms
+ ✓ Compiled in 5.1s (2788 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 317ms
+ GET /connections?_rsc=1tjfv 200 in 410ms
+ GET /scheduled-posts?_rsc=1y5cf 200 in 408ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 1119ms (1961 modules)
+ GET /api/posts? 200 in 1492ms
+ GET /api/posts? 200 in 231ms
+ GET /api/connections 200 in 241ms
+ GET /api/posts 200 in 291ms
+ GET /api/connections 200 in 253ms
+ GET /api/posts 200 in 183ms
+ GET /connections 200 in 1082ms
+ GET /api/connections 200 in 358ms
+ GET /api/posts 200 in 374ms
+ GET /api/posts 200 in 395ms
+ GET /api/connections 200 in 416ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 189ms
+ GET /api/posts? 200 in 191ms
+ GET /api/posts? 200 in 220ms
+ GET /create-post?_rsc=1ljsa 200 in 40ms
+ GET /api/posts 200 in 671ms
+ GET /api/connections 200 in 768ms
+ GET /api/posts 200 in 206ms
+ GET /api/connections 200 in 284ms
+ GET /api/posts? 200 in 229ms
+ GET /api/posts? 200 in 166ms
+ GET /connections?_rsc=1tjfv 200 in 338ms
+ GET /api/posts? 200 in 444ms
+ GET /api/posts? 200 in 271ms
+ GET /api/connections 200 in 213ms
+ GET /api/posts 200 in 260ms
+ GET /api/connections 200 in 176ms
+ GET /api/posts 200 in 171ms
+ GET /api/posts 200 in 378ms
+ GET /api/connections 200 in 393ms
+ GET /api/posts 200 in 183ms
+ GET /api/connections 200 in 220ms
+ GET /scheduled-posts?_rsc=1y5cf 200 in 531ms
+ GET /api/posts? 200 in 177ms
+ GET /api/posts? 200 in 240ms
+ GET /create-post?_rsc=1x4zl 200 in 37ms
+ GET /api/posts 200 in 204ms
+ GET /api/connections 200 in 263ms
+ GET /api/posts 200 in 294ms
+ GET /api/connections 200 in 244ms
+ ✓ Compiled in 5.9s (3198 modules)
+ GET /dashboard?_rsc=1i0oq 200 in 270ms
+ GET /dashboard 200 in 607ms
+ GET /api/connections 200 in 313ms
+ GET /api/posts 200 in 330ms
+ GET /api/connections 200 in 185ms
+ GET /api/posts 200 in 222ms
+ GET /scheduled-posts?_rsc=1mk54 200 in 221ms
+ GET /api/posts? 200 in 232ms
+ GET /api/posts? 200 in 275ms
+ ✓ Compiled in 10s (1263 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 733ms
+ ✓ Compiled in 5.5s (2783 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 2686ms
+ ✓ Compiled in 8.7s (2783 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 517ms
+ ✓ Compiled in 9.3s (2783 modules)
+ GET /scheduled-posts?_rsc=1q6iy 200 in 663ms
+ ○ Compiling /api/posts ...
+ ✓ Compiled /api/posts in 579ms (1551 modules)
+ ✓ Compiled (1961 modules)
+ GET /api/connections 200 in 4104ms
+ GET /api/posts 200 in 4112ms
+ GET /api/posts 200 in 251ms
+ GET /api/connections 200 in 261ms
+ GET /scheduled-posts?_rsc=1y5cf 200 in 549ms
+ GET /api/posts? 200 in 231ms
+ GET /api/posts? 200 in 180ms
+ GET /connections?_rsc=1hy8k 200 in 299ms
+ GET /create-post?_rsc=1ljsa 200 in 60ms
+ GET /api/posts? 200 in 199ms
+ GET /api/posts? 200 in 169ms
+ GET /api/connections 200 in 223ms
+ GET /api/posts 200 in 243ms
+ GET /api/connections 200 in 190ms
+ GET /api/posts 200 in 179ms

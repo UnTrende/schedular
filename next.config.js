@@ -13,14 +13,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.workers.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
       }
     ],
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '10mb',
-    },
-  },
+  // Server actions are stable in Next 14.1
 }
 
 module.exports = nextConfig

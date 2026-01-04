@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Outfit } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { ToastProvider } from '@/components/providers/toast-provider'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
 export const metadata: Metadata = {
   title: 'Social Scheduler - Your All-in-One Social Media Command Center',
@@ -14,11 +15,6 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
   },
 }
-
-import { Navbar } from '@/components/navbar'
-// ... (keep existing imports)
-
-// ... (keep metadata)
 
 export default function RootLayout({
   children,
@@ -29,13 +25,13 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: '#2c69ff', // Buffer Blue
+          colorPrimary: '#14b8a6', // New Primary: Teal
           colorBackground: '#ffffff',
           colorInputBackground: '#f8fafc',
           colorInputText: '#1a1a1a',
         },
         elements: {
-          formButtonPrimary: 'bg-primary hover:bg-blue-700',
+          formButtonPrimary: 'bg-primary hover:bg-teal-700',
           card: 'shadow-lg',
         },
       }}
@@ -47,11 +43,10 @@ export default function RootLayout({
             rel="stylesheet"
           />
         </head>
-        <body className={`${inter.variable} font-display antialiased`}>
+        <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
           <ThemeProvider>
             <ToastProvider>
               <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 text-text-primary-light dark:text-text-primary-dark">
-                <Navbar />
                 <main className="flex-1">
                   {children}
                 </main>

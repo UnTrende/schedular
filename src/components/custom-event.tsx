@@ -2,6 +2,7 @@
 
 import { PlatformIcon } from './platform-icon'
 import { PostStatus } from '@/types'
+import Image from 'next/image'
 
 interface CustomEventProps {
   event: {
@@ -29,7 +30,15 @@ export function CustomEvent({ event }: CustomEventProps) {
   return (
     <div className="flex items-start gap-2 p-1.5 rounded-lg w-full h-full text-left bg-white dark:bg-slate-800 shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-slate-700">
       {media_urls && media_urls.length > 0 ? (
-        <img src={media_urls[0]} alt="media" className="w-10 h-10 rounded-md object-cover" />
+        <div className="w-10 h-10 relative rounded-md overflow-hidden flex-shrink-0">
+          <Image 
+            src={media_urls[0]} 
+            alt="media" 
+            fill 
+            className="object-cover" 
+            sizes="40px"
+          />
+        </div>
       ) : (
         <div className="w-10 h-10 rounded-md bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
             <PlatformIcon platform={platform} size="sm" />

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui'
 import { useToast } from '@/components/providers/toast-provider'
 import { FILE_UPLOAD } from '@/lib/constants'
 import { formatFileSize } from '@/lib/utils'
+import Image from 'next/image'
 
 interface MediaUploaderProps {
   onUploadComplete: (urls: string[]) => void
@@ -170,7 +171,7 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {uploadedUrls.map((url, index) => (
             <div key={url} className="relative group">
-              <div className="aspect-square bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden">
+              <div className="aspect-square bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden relative">
                 {url.match(/\.(mp4|mov)$/i) ? (
                   <video
                     src={url}
@@ -178,10 +179,12 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
                     muted
                   />
                 ) : (
-                  <img
+                  <Image
                     src={url}
                     alt={`Upload ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 50vw, 25vw"
                   />
                 )}
               </div>
