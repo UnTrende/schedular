@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { getConnectionByPlatformServer } from '@/lib/db/connections'
+import { getConnectionByPlatformServer, updateConnection } from '@/lib/db/connections'
 import { Platform } from '@/types'
+import { decryptToken, encryptToken } from '@/lib/encryption'
 
 // GET /api/connections/pages?platform=facebook
 export async function GET(request: NextRequest) {
@@ -23,7 +24,12 @@ export async function GET(request: NextRequest) {
        return NextResponse.json({ error: 'No connection found. Please connect first.' }, { status: 404 })
     }
 
-    const userToken = connection.encrypted_access_token
+    // Decrypt the token before using it
+    const userToken = decryptToken(connection.encrypted_access_token)
+    
+    if (!userToken) {
+        return NextResponse.json({ error: 'Failed to decrypt access token' }, { status: 500 })
+    }
     
     // 2. Fetch Pages from Facebook Graph API
     // We need 'accounts' to get pages. For Instagram, we look for connected IG accounts.
@@ -87,7 +93,7 @@ export async function POST(request: NextRequest) {
     const { platform, pageId, pageToken, pageName } = body
 
     // Update the connection record with the SPECIFIC Page ID and Page Token
-    const { getConnectionByPlatformServer, updateConnection } = await import('@/lib/db/connections')
+    // We must encrypt the page token before saving it
     
     const { data: connection } = await getConnectionByPlatformServer(userId, platform)
     
@@ -96,13 +102,14 @@ export async function POST(request: NextRequest) {
     await updateConnection(connection.id, {
         platform_user_id: pageId,
         platform_username: pageName,
-        encrypted_access_token: pageToken, // Overwrite User Token with Page Token (Crucial for auto-posting)
+        encrypted_access_token: encryptToken(pageToken), // Encrypt the new Page Token
         status: 'active'
     })
 
     return NextResponse.json({ success: true })
 
   } catch (error: any) {
+    console.error('Error saving page selection:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

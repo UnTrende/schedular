@@ -92,6 +92,7 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+ENCRYPTION_KEY=[generate_hex_32_bytes_key_or_use_from_env_local]
 ```
 
 ### Optional (Add as needed)
