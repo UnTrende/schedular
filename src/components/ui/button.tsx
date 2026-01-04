@@ -6,7 +6,7 @@ import { motion, HTMLMotionProps } from 'framer-motion'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'icon'
   isLoading?: boolean
 }
 
@@ -41,6 +41,7 @@ export const Button = forwardRef<HTMLButtonElement, MotionButtonProps>(
       sm: 'px-4 py-2 text-sm gap-1.5 rounded-lg',
       md: 'px-6 py-3 text-base gap-2 rounded-xl',
       lg: 'px-8 py-4 text-lg gap-2.5 rounded-2xl',
+      icon: 'size-10 p-2 rounded-xl', // New icon size
     }
 
     return (
