@@ -3,7 +3,7 @@
 import { Modal, Button } from '@/components/ui'
 import { PlatformIcon } from '@/components/platform-icon'
 import { ScheduledPost, PostStatus } from '@/types'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import Image from 'next/image'
 
 interface EventDetailsModalProps {
@@ -35,7 +35,7 @@ export function EventDetailsModal({ isOpen, onClose, event, onDelete }: EventDet
       isOpen={isOpen}
       onClose={onClose}
       title="Post Details"
-      description={`Scheduled for ${format(start, 'MMMM d, yyyy @ h:mm a')}`}
+      description={`Scheduled for ${dayjs(start).format('MMMM D, YYYY @ h:mm A')}`}
       size="md"
     >
       <div className="mt-4 space-y-6">
