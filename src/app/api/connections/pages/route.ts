@@ -20,15 +20,31 @@ export async function GET(request: NextRequest) {
     // 1. Get the stored User Token
     const { data: connection } = await getConnectionByPlatformServer(userId, platform)
     
-    if (!connection || !connection.encrypted_access_token) {
+    if (!connection) {
+       console.error(`No connection found for user ${userId} on platform ${platform}`)
        return NextResponse.json({ error: 'No connection found. Please connect first.' }, { status: 404 })
     }
 
+    if (!connection.encrypted_access_token) {
+        console.error(`Connection found but no token present for user ${userId} on platform ${platform}`)
+        return NextResponse.json({ error: 'No access token found.' }, { status: 404 })
+    }
+
     // Decrypt the token before using it
-    const userToken = decryptToken(connection.encrypted_access_token)
+    let userToken = decryptToken(connection.encrypted_access_token)
     
+    // Fallback: If decryption fails, check if it might be a legacy plaintext token
     if (!userToken) {
-        return NextResponse.json({ error: 'Failed to decrypt access token' }, { status: 500 })
+        console.warn(`Decryption failed for ${platform} token. Checking if plaintext...`)
+        // Simple check: Encrypted format is iv:tag:data (3 parts separated by :)
+        // If it doesn't look like that, it might be plaintext
+        if (!connection.encrypted_access_token.includes(':')) {
+            console.log('Token appears to be plaintext (legacy). Using as is.')
+            userToken = connection.encrypted_access_token
+        } else {
+            console.error('Token is in encrypted format but decryption failed (key mismatch?).')
+            return NextResponse.json({ error: 'Failed to decrypt access token' }, { status: 500 })
+        }
     }
     
     // 2. Fetch Pages from Facebook Graph API
