@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     // We need 'accounts' to get pages. For Instagram, we look for connected IG accounts.
     const fields = platform === 'facebook' 
       ? 'id,name,access_token,picture{url}' 
-      : 'id,name,picture{url},instagram_business_account{id,username,profile_picture_url}'
+      : 'id,name,access_token,picture{url},instagram_business_account{id,username,profile_picture_url}'
 
     const url = `https://graph.facebook.com/v18.0/me/accounts?fields=${fields}&access_token=${userToken}`
     
