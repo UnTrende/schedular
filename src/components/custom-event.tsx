@@ -4,21 +4,33 @@ import { PlatformIcon } from './platform-icon'
 import { PostStatus } from '@/types'
 import Image from 'next/image'
 
-interface CustomEventProps {
-  event: {
-    title: string;
-    start?: Date;
-    end?: Date;
-    resource: {
-      platform: any;
-      status: PostStatus;
-      media_urls?: string[];
-    };
+// Define the shape of our specific event data
+export interface MyCalendarEvent {
+  title: string;
+  start?: Date;
+  end?: Date;
+  resource: {
+    platform: any;
+    status: PostStatus;
+    media_urls?: string[];
   };
 }
 
-export function CustomEvent({ event }: CustomEventProps) {
+// Define props compatible with react-big-calendar's Event component
+// The library passes { event, title, isAllDay, ... }
+interface CustomEventComponentProps {
+  event: MyCalendarEvent;
+  title?: string; // Optional as we get it from event.title usually
+}
+
+export function CustomEvent(props: any) {
+  // We cast props.event to our specific type
+  const event = props.event as MyCalendarEvent
   const { title, resource } = event
+  
+  // Safety check in case resource is missing (though it shouldn't be)
+  if (!resource) return null;
+
   const { platform, status, media_urls } = resource
 
   const statusStyles = {
@@ -46,7 +58,7 @@ export function CustomEvent({ event }: CustomEventProps) {
       )}
       <div className="flex-1 min-w-0">
         <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{title}</p>
-        <div className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-1 ${statusStyles[status]}`}>
+        <div className={`text-xs font-medium px-2 py-0.5 rounded-full inline-block mt-1 ${statusStyles[status] || 'bg-gray-100 text-gray-700'}`}>
           {status}
         </div>
       </div>
