@@ -130,7 +130,7 @@ WeeklyGridView.range = (date: Date) => {
 
 WeeklyGridView.navigate = (date: Date, action: 'PREV' | 'NEXT' | 'TODAY') => {
   switch (action) {
-    case Navigate.PREV:
+    case Navigate.PREVIOUS:
       return dayjs(date).add(-1, 'week').toDate()
     case Navigate.NEXT:
       return dayjs(date).add(1, 'week').toDate()

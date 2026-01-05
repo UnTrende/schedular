@@ -109,7 +109,7 @@ DailyGridView.range = (date: Date) => {
 
 DailyGridView.navigate = (date: Date, action: 'PREV' | 'NEXT' | 'TODAY') => {
   switch (action) {
-    case Navigate.PREV:
+    case Navigate.PREVIOUS:
       return dayjs(date).add(-1, 'day').toDate()
     case Navigate.NEXT:
       return dayjs(date).add(1, 'day').toDate()
