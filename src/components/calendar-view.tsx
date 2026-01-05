@@ -12,13 +12,15 @@ const localizer = dayjsLocalizer(dayjs)
 const DnDCalendar = withDragAndDrop(Calendar)
 
 import { CustomEvent } from './custom-event'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { ScheduledPost } from '@/types'
 import { LoadingSpinner } from './loading-spinner'
 import { EventDetailsModal } from './event-details-modal'
 import { useToast } from '@/components/providers/toast-provider'
 import { useRouter } from 'next/navigation'
 import { CalendarProvider } from './calendar-context'
+import { DailyGridView } from './daily-grid-view'
+import { WeeklyGridView } from './weekly-grid-view'
 
 export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slotInfo: { start: Date; end: Date; }) => void; defaultView: 'month' | 'week' | 'day' }) {
   const [events, setEvents] = useState<any[]>([])
@@ -29,6 +31,14 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
   
   const toast = useToast()
   const router = useRouter()
+
+  const { views } = useMemo(() => ({
+    views: {
+      month: true,
+      week: WeeklyGridView,
+      day: DailyGridView
+    }
+  }), [])
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -135,7 +145,7 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
           startAccessor={(event: any) => event.start}
           endAccessor={(event: any) => event.end}
           style={{ height: '100%' }}
-          views={['month', 'week', 'day']}
+          views={views}
           defaultView={defaultView}
           view={view} // Controlled view state
           onView={handleViewChange} // Update state on change
