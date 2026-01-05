@@ -82,7 +82,7 @@ export function CustomEvent(props: any) {
          {media_urls && media_urls.length > 0 ? (
              <span className="material-symbols-outlined text-[14px]">image</span>
          ) : (
-             <PlatformIcon platform={platform} size="xs" />
+             <PlatformIcon platform={platform} size="sm" />
          )}
       </div>
       
