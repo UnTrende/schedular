@@ -33,13 +33,11 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
     platform: null,
   })
 
-  // Calculate Progress
   const totalPlatforms = Object.keys(PLATFORMS).length
   const connectedCount = connections.length
   const progressPercent = Math.round((connectedCount / totalPlatforms) * 100)
 
   useEffect(() => {
-    // Handle OAuth callback logic (kept same as before)
     const success = searchParams.get('success')
     const error = searchParams.get('error')
     const platform = searchParams.get('platform') as Platform | null
@@ -57,10 +55,8 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
       toast.error(`Failed to connect: ${error}`)
       window.history.replaceState({}, '', '/connections')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
-  // Keep existing fetch/handler logic...
   const fetchPages = async (platform: Platform) => {
     try {
       const response = await fetch(`/api/connections/pages?platform=${platform}`)
@@ -145,40 +141,54 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
   }
 
   return (
-    <div className="space-y-8">
-      {/* Progress Section */}
+    <div className="space-y-12">
+      {/* 🚀 Dynamic Progress Header */}
       <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl p-6 md:p-8 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-8 md:p-12 text-white shadow-2xl shadow-teal-500/10"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-teal-500/20 blur-[100px]" />
+        <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-rose-500/10 blur-[100px]" />
         
-        <div className="relative z-10">
-          <div className="flex justify-between items-end mb-4">
-            <div>
-              <h2 className="text-2xl font-bold mb-1">Your Social Ecosystem</h2>
-              <p className="text-indigo-100">Connect platforms to expand your reach</p>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/10 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-teal-400 border border-teal-500/20">
+              Account Sync Status
             </div>
-            <div className="text-right">
-              <span className="text-4xl font-black">{connectedCount}</span>
-              <span className="text-xl text-indigo-200">/{totalPlatforms}</span>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight">
+              Build your <span className="text-teal-400">Social</span><br />Command Center
+            </h2>
           </div>
           
-          <div className="h-3 bg-black/20 rounded-full overflow-hidden backdrop-blur-sm">
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={{ width: `${progressPercent}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="h-full bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-            />
+          <div className="flex items-center gap-6">
+            <div className="relative h-24 w-24">
+              <svg className="h-full w-full" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" className="fill-none stroke-white/5 stroke-[8]" />
+                <motion.circle 
+                  cx="50" cy="50" r="45" 
+                  className="fill-none stroke-teal-400 stroke-[8]" 
+                  strokeDasharray="283"
+                  initial={{ strokeDashoffset: 283 }}
+                  animate={{ strokeDashoffset: 283 - (283 * progressPercent) / 100 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center text-2xl font-black">
+                {progressPercent}%
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-tighter">Connected</p>
+              <p className="text-4xl font-black">{connectedCount}<span className="text-slate-600 text-xl ml-1">/{totalPlatforms}</span></p>
+            </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
+      {/* 🧩 Professional Platform Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <AnimatePresence>
           {platforms.map((platform, index) => {
             const config = PLATFORMS[platform]
@@ -191,81 +201,93 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="h-full"
+                className="group"
               >
                 <div 
                   className={cn(
-                    "group relative h-full rounded-2xl border-2 transition-all duration-300 overflow-hidden",
+                    "relative h-full overflow-hidden rounded-[2rem] border-2 transition-all duration-500 p-8",
                     isConnected 
-                      ? "bg-white dark:bg-slate-900 border-primary/20 shadow-lg shadow-primary/5" 
-                      : "bg-slate-50 dark:bg-slate-900/50 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                      ? "bg-white dark:bg-slate-900 border-teal-500/20 shadow-xl shadow-teal-500/5" 
+                      : "bg-white/50 dark:bg-slate-950/50 border-slate-100 dark:border-slate-800 hover:border-teal-500/30"
                   )}
                 >
-                  {/* Status Indicator Line */}
-                  {isConnected && (
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-indigo-500" />
-                  )}
+                  {/* Subtle Background Platform Pattern */}
+                  <div className="absolute -right-4 -top-4 opacity-[0.03] grayscale transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 group-hover:opacity-[0.07]">
+                     <PlatformIcon platform={platform} size="xl" className="scale-[5]" />
+                  </div>
 
-                  <div className="p-6 md:p-8 flex items-start gap-6">
-                    {/* Icon */}
-                    <div className={cn(
-                      "p-4 rounded-2xl transition-all duration-300",
-                      isConnected 
-                        ? `bg-${config.color}-100 dark:bg-${config.color}-900/20 text-${config.color}-600 dark:text-${config.color}-400`
-                        : "bg-slate-200 dark:bg-slate-800 text-slate-400 group-hover:scale-110 group-hover:bg-white dark:group-hover:bg-slate-700 shadow-inner"
-                    )}>
-                      <PlatformIcon platform={platform} size="xl" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className={cn(
-                            "text-xl font-bold mb-1 transition-colors",
-                            isConnected ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200"
-                          )}>
-                            {config.name}
-                          </h3>
-                          
-                          {isConnected ? (
-                            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
-                              <span className="relative flex h-2.5 w-2.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                              </span>
-                              Active
-                            </div>
-                          ) : (
-                            <p className="text-sm text-slate-400">Not connected</p>
-                          )}
-                        </div>
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="flex items-start justify-between mb-8">
+                      <div className={cn(
+                        "flex h-16 w-16 items-center justify-center rounded-2xl shadow-inner transition-all duration-500 group-hover:scale-110",
+                        isConnected 
+                          ? "bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400"
+                          : "bg-slate-50 dark:bg-slate-800 text-slate-300"
+                      )}>
+                        <PlatformIcon platform={platform} size="lg" />
                       </div>
 
                       {isConnected ? (
-                        <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                          <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
-                             <span className="material-symbols-outlined text-slate-400 text-lg">alternate_email</span>
-                             {connection.platform_username}
-                          </p>
-                          <div className="flex gap-2">
+                        <div className="flex flex-col items-end">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 dark:bg-teal-900/30 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
+                             <span className="h-1.5 w-1.5 rounded-full bg-teal-500 animate-pulse" />
+                             Connected
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600">
+                          Inactive
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex-1">
+                      <h3 className={cn(
+                        "text-2xl font-black tracking-tight transition-colors mb-2",
+                        isConnected ? "text-slate-900 dark:text-white" : "text-slate-400"
+                      )}>
+                        {config.name}
+                      </h3>
+                      
+                      {isConnected ? (
+                        <div className="space-y-6 mt-6">
+                          <div className="flex items-center gap-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 p-4 border border-slate-100 dark:border-slate-800">
+                            <div className="h-8 w-8 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-sm">
+                               <span className="material-symbols-outlined text-teal-500 text-lg">alternate_email</span>
+                            </div>
+                            <span className="text-sm font-black text-slate-700 dark:text-slate-200">
+                              {connection.platform_username || 'Authorized User'}
+                            </span>
+                          </div>
+                          
+                          <div className="flex gap-3">
                             {connection.status === 'reconnect_needed' && (
-                              <Button variant="primary" size="sm" onClick={() => handleConnect(platform)} className="flex-1">
+                              <Button 
+                                variant="primary" 
+                                size="sm" 
+                                onClick={() => handleConnect(platform)} 
+                                className="flex-1 rounded-xl font-black bg-amber-500 hover:bg-amber-600 shadow-amber-500/20"
+                              >
                                 Reconnect
                               </Button>
                             )}
-                            <Button variant="ghost" size="sm" onClick={() => setDeleteModal({ isOpen: true, connection })} className="flex-1 text-red-500 hover:text-red-600 hover:bg-red-50">
-                              Disconnect
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => setDeleteModal({ isOpen: true, connection })} 
+                              className="flex-1 rounded-xl text-xs font-bold text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-all"
+                            >
+                              Disconnect Account
                             </Button>
                           </div>
                         </div>
                       ) : (
-                        <div className="mt-6">
+                        <div className="mt-8">
                           <Button 
-                            variant="secondary" 
-                            className="w-full group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300"
                             onClick={() => handleConnect(platform)}
+                            className="w-full rounded-2xl py-6 font-black tracking-tight transition-all duration-300 bg-slate-900 dark:bg-slate-800 hover:bg-teal-500 hover:shadow-2xl hover:shadow-teal-500/20"
                           >
-                            Connect {config.name}
+                            Add {config.name}
                           </Button>
                         </div>
                       )}
@@ -278,43 +300,44 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
         </AnimatePresence>
       </div>
 
-      {/* Info Card - Redesigned */}
-      <div className="bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800 rounded-2xl p-4 flex gap-4 items-center text-sm text-blue-800 dark:text-blue-300">
-        <span className="material-symbols-outlined text-2xl">info</span>
-        <p>
-          Need help? Check out the <code className="bg-white/50 px-1.5 py-0.5 rounded font-mono text-blue-600">oauth-setup/SETUP_GUIDE.md</code> to get your developer keys.
-        </p>
+      {/* 🛡️ Trust Indicator */}
+      <div className="flex items-center justify-center gap-8 py-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-500">
+         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Secure AES-256 Encryption</p>
+         <div className="h-px w-12 bg-slate-200 dark:bg-slate-800" />
+         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Direct Official OAuth 2.0</p>
       </div>
 
-      {/* Modals remain the same */}
+      {/* Modals with Clean Glass Styling */}
       <Modal
         isOpen={pageSelectionModal.isOpen}
         onClose={() => setPageSelectionModal({ isOpen: false, pages: [], platform: null })}
-        title={`Select ${pageSelectionModal.platform === 'facebook' ? 'Facebook Page' : 'Instagram Account'}`}
-        description="Choose the account you want to post to."
+        title={`Authorize ${pageSelectionModal.platform === 'facebook' ? 'Page' : 'Account'}`}
+        description="Select the verified entity you want to manage through this command center."
         size="md"
       >
-        <div className="mt-4 grid grid-cols-1 gap-3 max-h-[60vh] overflow-y-auto p-1">
+        <div className="mt-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
           {pageSelectionModal.pages.map((page) => (
             <button
               key={page.id}
               onClick={() => handleSelectPage(page)}
-              className="flex items-center gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left group"
+              className="flex items-center gap-5 w-full p-5 rounded-3xl border-2 border-slate-50 dark:border-slate-800/50 hover:border-teal-500/30 hover:bg-teal-50/20 dark:hover:bg-teal-900/10 transition-all duration-300 text-left group"
             >
-              {page.image ? (
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src={page.image} alt={page.name} fill className="rounded-full object-cover border border-slate-100 dark:border-slate-600" sizes="48px" />
+              <div className="relative h-14 w-14 flex-shrink-0">
+                {page.image ? (
+                  <Image src={page.image} alt={page.name} fill className="rounded-2xl object-cover shadow-md" sizes="56px" />
+                ) : (
+                  <div className="h-full w-full rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-slate-400">corporate_fare</span>
+                  </div>
+                )}
+                <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-teal-500 border-2 border-white dark:border-slate-900 flex items-center justify-center shadow-sm">
+                   <span className="material-symbols-outlined text-white text-[10px]">check</span>
                 </div>
-              ) : (
-                 <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-slate-400">flag</span>
-                 </div>
-              )}
-              <div className="flex-1">
-                <h4 className="font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">{page.name}</h4>
-                <p className="text-xs text-slate-500">ID: {page.id}</p>
               </div>
-              <span className="material-symbols-outlined text-slate-400 group-hover:text-primary">chevron_right</span>
+              <div className="flex-1">
+                <h4 className="font-black text-slate-900 dark:text-white group-hover:text-teal-600 transition-colors">{page.name}</h4>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Verified Provider ID: {page.id}</p>
+              </div>
             </button>
           ))}
         </div>
@@ -323,13 +346,13 @@ export function ConnectionsList({ initialConnections = [] }: { initialConnection
       <Modal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, connection: null })}
-        title="Remove Connection"
-        description={`Disconnecting will stop scheduled posts for this platform.`}
+        title="Revoke Authorization"
+        description="This will immediately stop all scheduled activities for this account. Your encrypted credentials will be purged from our vault."
         size="sm"
       >
-        <div className="flex gap-3 justify-end mt-6">
-          <Button variant="secondary" onClick={() => setDeleteModal({ isOpen: false, connection: null })}>Cancel</Button>
-          <Button variant="danger" onClick={handleDelete}>Disconnect</Button>
+        <div className="flex gap-4 justify-end mt-8">
+          <Button variant="secondary" onClick={() => setDeleteModal({ isOpen: false, connection: null })} className="rounded-xl px-8">Keep Access</Button>
+          <Button variant="danger" onClick={handleDelete} className="rounded-xl px-8 bg-rose-500 hover:bg-rose-600 shadow-rose-500/20">Revoke Now</Button>
         </div>
       </Modal>
     </div>
