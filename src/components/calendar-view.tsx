@@ -18,12 +18,14 @@ import { LoadingSpinner } from './loading-spinner'
 import { EventDetailsModal } from './event-details-modal'
 import { useToast } from '@/components/providers/toast-provider'
 import { useRouter } from 'next/navigation'
+import { CalendarProvider } from './calendar-context'
 
 export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slotInfo: { start: Date; end: Date; }) => void; defaultView: 'month' | 'week' | 'day' }) {
   const [events, setEvents] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [view, setView] = useState(defaultView)
   
   const toast = useToast()
   const router = useRouter()
@@ -112,6 +114,10 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
     }
   }
 
+  const handleViewChange = (newView: any) => {
+    setView(newView)
+  }
+
   if (isLoading) {
     return (
         <div className="h-[85vh] bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm flex items-center justify-center">
@@ -121,7 +127,7 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
   }
 
   return (
-    <>
+    <CalendarProvider value={view}>
       <div className="h-[85vh] bg-white dark:bg-card-dark p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
         <DnDCalendar
           localizer={localizer}
@@ -131,6 +137,8 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
           style={{ height: '100%' }}
           views={['month', 'week', 'day']}
           defaultView={defaultView}
+          view={view} // Controlled view state
+          onView={handleViewChange} // Update state on change
           selectable
           resizable={false} // Disable resizing duration for now, just moving
           onSelectSlot={onSelectSlot}
@@ -151,6 +159,6 @@ export function CalendarView({ onSelectSlot, defaultView }: { onSelectSlot: (slo
         event={selectedEvent}
         onDelete={handleDeletePost}
       />
-    </>
+    </CalendarProvider>
   )
 }
