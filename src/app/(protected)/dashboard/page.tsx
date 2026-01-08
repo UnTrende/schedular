@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { Button, Modal } from '@/components/ui'
-import { CalendarView } from '@/components/calendar-view'
-import { SocialProfilesSidebar } from '@/components/social-profiles-sidebar'
-import { PostCreationForm } from '@/components/post-creation-form'
+import { CalendarView } from '@/components/calendar/calendar-view'
+import { SocialProfilesSidebar } from '@/components/layout/social-profiles-sidebar'
+import { PostCreationForm } from '@/components/posts/post-creation-form'
 
 export default function DashboardPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)

@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Card, Button } from '@/components/ui'
-import { PlatformIcon } from '@/components/platform-icon'
-import { SocialConnection } from '@/types'
-import { LoadingSpinner } from '@/components/loading-spinner'
+import { PlatformIcon } from '@/components/shared/platform-icon'
+import { LoadingSpinner } from '@/components/shared/loading-spinner'
 import { cn } from '@/lib/utils'
 
 export function SocialProfilesSidebar() {

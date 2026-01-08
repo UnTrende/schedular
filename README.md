@@ -2,7 +2,7 @@
 
 A high-performance, fintech-grade social media scheduling application built with Next.js 14. Designed for precision, security, and scalability using a modern serverless stack.
 
-![Dashboard Preview](./design-assets/dashboard_page/screen.png)
+![Dashboard Preview](./docs/design/dashboard_page/screen.png)
 
 ## 🚀 Tech Stack
 
@@ -36,6 +36,11 @@ Copy the example file and fill in your keys:
 ```bash
 cp .env.local.example .env.local
 ```
+
+> **Detailed Setup Guides:**
+> - [OAuth Setup](./docs/setup/oauth/SETUP_GUIDE.md)
+> - [R2 Storage Setup](./docs/setup/r2/SETUP_GUIDE.md)
+> - [Database Guide](./docs/DATABASE_GUIDE.md)
 
 **Required Keys:**
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY`
@@ -87,8 +92,8 @@ social-scheduler/
 │   ├── lib/              # Core Logic (DB, R2, OAuth)
 │   ├── trigger/          # Background Tasks (Publishing Logic)
 │   └── types/            # TypeScript Definitions
-├── design-assets/        # Original UI/UX References
-└── docs/                 # Detailed Tech Specs & Guides
+├── worker/               # Background Worker Service
+└── docs/                 # Detailed Tech Specs, Setup Guides & Design Assets
 ```
 
 ## 🔐 Security

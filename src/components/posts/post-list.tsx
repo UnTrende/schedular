@@ -1,10 +1,10 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { PostCard } from '@/components/post-card'
-import { EmptyState } from '@/components/empty-state'
+import { PostCard } from '@/components/posts/post-card'
+import { EmptyState } from '@/components/shared/empty-state'
 import { Button, Modal } from '@/components/ui'
-import { LoadingSpinner } from '@/components/loading-spinner'
+import { LoadingSpinner } from '@/components/shared/loading-spinner'
 import { useToast } from '@/components/providers/toast-provider'
 import { ScheduledPost, PostStatus } from '@/types'
 import Link from 'next/link'
@@ -113,7 +113,7 @@ export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListPr
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {posts.map((post) => (
           <PostCard
             key={post.id}

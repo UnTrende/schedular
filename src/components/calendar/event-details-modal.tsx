@@ -1,7 +1,7 @@
 'use client'
 
 import { Modal, Button } from '@/components/ui'
-import { PlatformIcon } from '@/components/platform-icon'
+import { PlatformIcon } from '@/components/shared/platform-icon'
 import { ScheduledPost, PostStatus } from '@/types'
 import dayjs from 'dayjs'
 import Image from 'next/image'

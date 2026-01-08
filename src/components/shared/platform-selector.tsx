@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import { Platform } from '@/types'
 import { cn } from '@/lib/utils'
-import { PlatformIcon } from '@/components/platform-icon'
+import { PlatformIcon } from '@/components/shared/platform-icon'
 import { PLATFORMS } from '@/lib/constants'
 
 interface PlatformSelectorProps {

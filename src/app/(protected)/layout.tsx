@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { Navbar } from '@/components/navbar'
-import { MobileNav } from '@/components/mobile-nav'
-import { UserButton } from '@/components/user-button'
+import { Navbar } from '@/components/layout/navbar'
+import { MobileNav } from '@/components/layout/mobile-nav'
+import { UserButton } from '@/components/layout/user-button'
 
 export const dynamic = 'force-dynamic'
 

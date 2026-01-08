@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
-import { PostList } from '@/components/post-list'
+import { PostList } from '@/components/posts/post-list'
 import { PostStatus, ScheduledPost } from '@/types'
 import { useToast } from '@/components/providers/toast-provider'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: ScheduledPost[] }) {
   const [statusFilter, setStatusFilter] = useState<PostStatus | 'all'>('all')
@@ -27,9 +28,7 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
 
       if (response.ok) {
         toast.success('History cleared successfully')
-        // Refresh the page data
         router.refresh()
-        // Reload location to force re-fetch of initialPosts if router.refresh is not sufficient in this context
         window.location.reload()
       } else {
         toast.error('Failed to clear history')
@@ -41,83 +40,71 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
     }
   }
 
+  const FilterTab = ({ label, value, icon }: { label: string, value: PostStatus | 'all', icon?: string }) => (
+    <button
+      onClick={() => setStatusFilter(value)}
+      className={cn(
+        "relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2",
+        statusFilter === value
+          ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md"
+          : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+      )}
+    >
+      {icon && <span className="material-symbols-outlined text-[18px]">{icon}</span>}
+      {label}
+    </button>
+  )
+
   return (
-    <div className="p-4 md:p-10">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-10 flex flex-col sm:flex-row items-center justify-center sm:justify-between text-center sm:text-left gap-6">
-          <div className="space-y-1">
-            <h1 className="text-3xl md:text-4xl font-black text-gradient pb-1">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950/50 p-6 md:p-12">
+      <div className="max-w-7xl mx-auto space-y-10">
+        
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
               Scheduled Posts
             </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-base md:text-lg">
-              Manage and track your scheduled social media posts
+            <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
+              Overview of your upcoming content calendar and publishing history.
             </p>
           </div>
-          <Link href="/create-post" className="w-full sm:w-auto">
-            <Button variant="primary" size="md" className="w-full sm:w-auto rounded-xl">
-              <span className="material-symbols-outlined text-xl">add</span>
-              <span>New Post</span>
+          
+          <Link href="/create-post">
+            <Button variant="primary" size="lg" className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+              <span className="material-symbols-outlined mr-2">add</span>
+              Create Post
             </Button>
           </Link>
         </div>
 
-        {/* Filters - Centered and with padding for shadows */}
-        <div className="mb-8 flex flex-wrap justify-center items-center gap-3 p-1">
-          <Button
-            variant={statusFilter === 'all' ? 'secondary' : 'ghost'}
-            size="sm"
-            className="rounded-full px-5"
-            onClick={() => setStatusFilter('all')}
-          >
-            All Posts
-          </Button>
-          <Button
-            variant={statusFilter === 'pending' ? 'secondary' : 'ghost'}
-            size="sm"
-            className="rounded-full px-5"
-            onClick={() => setStatusFilter('pending')}
-          >
-            <span className="material-symbols-outlined text-base">schedule</span>
-            Pending
-          </Button>
-          <Button
-            variant={statusFilter === 'published' ? 'secondary' : 'ghost'}
-            size="sm"
-            className="rounded-full px-5"
-            onClick={() => setStatusFilter('published')}
-          >
-            <span className="material-symbols-outlined text-base">check_circle</span>
-            Published
-          </Button>
-          <Button
-            variant={statusFilter === 'failed' ? 'secondary' : 'ghost'}
-            size="sm"
-            className="rounded-full px-5"
-            onClick={() => setStatusFilter('failed')}
-          >
-            <span className="material-symbols-outlined text-base">error</span>
-            Failed
-          </Button>
+        {/* Controls Toolbar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900/50 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          
+          {/* Filters */}
+          <div className="flex items-center gap-1 p-1 overflow-x-auto w-full sm:w-auto no-scrollbar">
+            <FilterTab label="All" value="all" />
+            <FilterTab label="Pending" value="pending" icon="schedule" />
+            <FilterTab label="Published" value="published" icon="check_circle" />
+            <FilterTab label="Failed" value="failed" icon="error" />
+          </div>
 
-          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block" />
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-full px-5 text-slate-500 hover:text-red-600 hover:bg-red-50"
-            onClick={handleClearHistory}
-            disabled={isClearing}
-          >
-            <span className="material-symbols-outlined text-base">delete_sweep</span>
-            {isClearing ? 'Clearing...' : 'Clear History'}
-          </Button>
+          {/* Actions */}
+          <div className="w-full sm:w-auto flex justify-end px-2">
+             <button
+              onClick={handleClearHistory}
+              disabled={isClearing}
+              className="text-xs font-medium text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[16px]">delete_sweep</span>
+              {isClearing ? 'Clearing...' : 'Clear History'}
+            </button>
+          </div>
         </div>
 
-        {/* Post List */}
+        {/* Content Grid */}
         <PostList statusFilter={statusFilter} initialPosts={initialPosts} />
       </div>
     </div>
   )
 }
-

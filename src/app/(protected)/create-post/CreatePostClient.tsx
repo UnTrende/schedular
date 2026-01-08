@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { PostCreationForm } from '@/components/post-creation-form'
+import { PostCreationForm } from '@/components/posts/post-creation-form'
 
 export default function CreatePostClient() {
   const router = useRouter()

@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { ConnectionsList } from '@/components/connections-list'
+import { ConnectionsList } from '@/components/dashboard/connections-list'
 import { getUserConnections } from '@/lib/db/connections'
 
 export default async function ConnectionsPage() {
