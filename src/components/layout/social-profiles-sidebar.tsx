@@ -7,6 +7,7 @@ import { Card, Button } from '@/components/ui'
 import { PlatformIcon } from '@/components/shared/platform-icon'
 import { LoadingSpinner } from '@/components/shared/loading-spinner'
 import { cn } from '@/lib/utils'
+import { SocialConnection } from '@/types'
 
 export function SocialProfilesSidebar() {
   const [connections, setConnections] = useState<SocialConnection[]>([])
