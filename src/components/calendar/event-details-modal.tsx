@@ -2,7 +2,7 @@
 
 import { Modal, Button } from '@/components/ui'
 import { PlatformIcon } from '@/components/shared/platform-icon'
-import { ScheduledPost, PostStatus } from '@/types'
+import { ScheduledPost, PostStatus, Platform } from '@/types'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 
@@ -19,7 +19,7 @@ export function EventDetailsModal({ isOpen, onClose, event, onDelete }: EventDet
   const { title, start, resource } = event
   const { id, platform, status, media_urls } = resource as { 
     id: string, 
-    platform: any, 
+    platform: Platform, 
     status: PostStatus, 
     media_urls: string[] 
   }
