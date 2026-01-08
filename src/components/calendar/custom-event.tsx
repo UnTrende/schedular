@@ -1,6 +1,6 @@
 'use client'
 
-import { PlatformIcon } from './platform-icon'
+import { PlatformIcon } from '@/components/shared/platform-icon'
 import { PostStatus } from '@/types'
 import { useCalendarView } from './calendar-context'
 import Image from 'next/image'

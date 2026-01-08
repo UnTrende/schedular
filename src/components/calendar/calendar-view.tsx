@@ -14,7 +14,7 @@ const DnDCalendar = withDragAndDrop(Calendar)
 import { CustomEvent } from './custom-event'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { ScheduledPost } from '@/types'
-import { LoadingSpinner } from './loading-spinner'
+import { LoadingSpinner } from '@/components/shared/loading-spinner'
 import { EventDetailsModal } from './event-details-modal'
 import { useToast } from '@/components/providers/toast-provider'
 import { useRouter } from 'next/navigation'
