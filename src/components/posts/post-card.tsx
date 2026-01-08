@@ -71,7 +71,7 @@ export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
                {isPublished ? 'published_with_changes' : 'event'}
              </span>
              <span>
-               {isPublished 
+               {isPublished && post.published_at
                  ? `Published ${formatRelativeTime(post.published_at)}` 
                  : formatDateTime(post.scheduled_at)
                }
