@@ -8,11 +8,13 @@ import { cn } from '@/lib/utils'
 
 interface PostCardProps {
   post: ScheduledPost
+  selected?: boolean
+  onSelect?: (checked: boolean) => void
   onEdit?: (post: ScheduledPost) => void
   onDelete?: (post: ScheduledPost) => void
 }
 
-export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
+export function PostCard({ post, selected = false, onSelect, onEdit, onDelete }: PostCardProps) {
   const isPast = new Date(post.scheduled_at) < new Date()
   const isPublished = post.status === 'published'
   const isFailed = post.status === 'failed'
@@ -20,9 +22,29 @@ export function PostCard({ post, onEdit, onDelete }: PostCardProps) {
   const hasMedia = post.media_urls && post.media_urls.length > 0
 
   return (
-    <div className="group relative flex flex-col bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden hover:shadow-xl hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 h-full">
+    <div className={cn(
+      "group relative flex flex-col bg-white dark:bg-slate-950 border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full",
+      selected 
+        ? "border-primary ring-2 ring-primary ring-offset-2 dark:ring-offset-slate-950 shadow-md" 
+        : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
+    )}>
+      {/* Selection Checkbox */}
+      {onSelect && (
+        <div className={cn(
+          "absolute top-3 left-3 z-20 transition-opacity duration-200",
+          selected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+        )}>
+          <input
+            type="checkbox"
+            checked={selected}
+            onChange={(e) => onSelect(e.target.checked)}
+            className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer accent-primary"
+          />
+        </div>
+      )}
+
       {/* Header */}
-      <div className="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50 bg-slate-50/30 dark:bg-slate-900/10">
+      <div className="p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/50 bg-slate-50/30 dark:bg-slate-900/10 pl-10">
         <div className="flex items-center gap-2">
           <div className="p-1.5 bg-white dark:bg-slate-900 rounded-full shadow-sm border border-slate-100 dark:border-slate-800">
             <PlatformIcon platform={post.platform} size="sm" />

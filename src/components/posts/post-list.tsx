@@ -9,12 +9,25 @@ import { useToast } from '@/components/providers/toast-provider'
 import { ScheduledPost, PostStatus } from '@/types'
 import Link from 'next/link'
 
+export type DateFilter = 'latest' | 'older' | 'all'
+
 interface PostListProps {
   statusFilter?: PostStatus | 'all'
   initialPosts?: ScheduledPost[]
+  dateFilter?: DateFilter
+  selectedIds?: string[]
+  onToggleSelection?: (id: string, selected: boolean) => void
+  onPostsLoaded?: (posts: ScheduledPost[]) => void
 }
 
-export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListProps) {
+export function PostList({ 
+  statusFilter = 'all', 
+  initialPosts = [], 
+  dateFilter = 'latest',
+  selectedIds = [],
+  onToggleSelection,
+  onPostsLoaded
+}: PostListProps) {
   const [posts, setPosts] = useState<ScheduledPost[]>(initialPosts)
   const [isLoading, setIsLoading] = useState(initialPosts.length === 0)
   const isFirstRender = useRef(true)
@@ -24,6 +37,17 @@ export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListPr
     post: null,
   })
   const toast = useToast()
+
+  // Notify parent of loaded posts whenever posts change
+  useEffect(() => {
+    if (onPostsLoaded) {
+      // Filter first? Usually parent wants to know about ALL fetched posts to handle "Select All" correctly
+      // But if we only show filtered posts, "Select All" should probably only select visible ones.
+      // Let's pass the filtered posts to be safe, or handle logic in parent.
+      // For now, let's pass all fetched posts matching statusFilter.
+      onPostsLoaded(posts)
+    }
+  }, [posts, onPostsLoaded])
 
   useEffect(() => {
     // Skip the first fetch if we already have initial data for the default filter
@@ -81,6 +105,22 @@ export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListPr
     }
   }
 
+  // Client-side date filtering
+  const filteredPosts = posts.filter(post => {
+    if (dateFilter === 'all') return true
+    
+    // For pending posts, use scheduled_at. For published/failed, use published_at or created_at
+    const dateToCheck = new Date(post.status === 'pending' ? post.scheduled_at : (post.published_at || post.created_at))
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    
+    if (dateFilter === 'latest') {
+      return dateToCheck >= thirtyDaysAgo
+    } else { // 'older'
+      return dateToCheck < thirtyDaysAgo
+    }
+  })
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -89,16 +129,20 @@ export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListPr
     )
   }
 
-  if (posts.length === 0) {
+  if (filteredPosts.length === 0) {
     return (
       <EmptyState
         icon="event_note"
         title={
           statusFilter === 'all'
-            ? 'No scheduled posts'
+            ? 'No posts found'
             : `No ${statusFilter} posts`
         }
-        description="Create your first post to get started with automated social media scheduling."
+        description={
+          posts.length > 0 
+            ? `You have posts, but none match the "${dateFilter}" filter.` 
+            : "Create your first post to get started with automated social media scheduling."
+        }
         action={
           <Link href="/create-post">
             <Button variant="primary" size="md">
@@ -114,10 +158,12 @@ export function PostList({ statusFilter = 'all', initialPosts = [] }: PostListPr
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <PostCard
             key={post.id}
             post={post}
+            selected={selectedIds.includes(post.id)}
+            onSelect={(checked) => onToggleSelection?.(post.id, checked)}
             onDelete={(post) => setDeleteModal({ isOpen: true, post })}
           />
         ))}
