@@ -9,28 +9,42 @@ import { useToast } from '@/components/providers/toast-provider'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: ScheduledPost[] }) {
+interface ScheduledPostsClientProps {
+  initialPosts?: ScheduledPost[]
+  serverNow?: Date
+}
+
+export function ScheduledPostsClient({ initialPosts = [], serverNow }: ScheduledPostsClientProps) {
   const [statusFilter, setStatusFilter] = useState<PostStatus | 'all'>('all')
   const [dateFilter, setDateFilter] = useState<DateFilter>('latest')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const [currentPosts, setCurrentPosts] = useState<ScheduledPost[]>(initialPosts) // Posts currently loaded in list
+  const [posts] = useState<ScheduledPost[]>(initialPosts) // Posts currently loaded (assume initial is all for now)
   const [isClearing, setIsClearing] = useState(false)
   const [isDeletingBatch, setIsDeletingBatch] = useState(false)
   
   const toast = useToast()
   const router = useRouter()
 
-  // Calculate visible posts based on local filters (to know what 'Select All' applies to)
+  // Use serverNow for stable date calculation during hydration
+  // Fallback to client Date if serverNow is missing (though it should be passed)
+  const now = serverNow || new Date()
+  
+  // Memoized filter logic using stable 'now'
   const visiblePosts = useMemo(() => {
-    return currentPosts.filter(post => {
-      // Date filter logic mirrors PostList
+    return posts.filter(post => {
+      // 1. Status Filter
+      if (statusFilter !== 'all' && post.status !== statusFilter) return false
+
+      // 2. Date Filter
       if (dateFilter === 'all') return true
+      
       const dateToCheck = new Date(post.status === 'pending' ? post.scheduled_at : (post.published_at || post.created_at))
-      const thirtyDaysAgo = new Date()
+      const thirtyDaysAgo = new Date(now)
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      
       return dateFilter === 'latest' ? dateToCheck >= thirtyDaysAgo : dateToCheck < thirtyDaysAgo
     })
-  }, [currentPosts, dateFilter])
+  }, [posts, statusFilter, dateFilter, now])
 
   const handleClearHistory = async () => {
     if (!window.confirm('Are you sure you want to delete all published and failed posts? This action cannot be undone.')) {
@@ -73,8 +87,6 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
         toast.success(`Deleted ${selectedIds.length} posts`)
         setSelectedIds([])
         router.refresh()
-        // We also need to remove them from local state ideally, but page reload/refresh might handle it.
-        // For smoother UX, let's refresh page.
         window.location.reload()
       } else {
         toast.error('Failed to delete posts')
@@ -94,10 +106,8 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
 
   const handleSelectAll = () => {
     if (selectedIds.length === visiblePosts.length && visiblePosts.length > 0) {
-      // Deselect all
       setSelectedIds([])
     } else {
-      // Select all visible
       setSelectedIds(visiblePosts.map(p => p.id))
     }
   }
@@ -106,7 +116,7 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
     <button
       onClick={() => {
         setStatusFilter(value)
-        setSelectedIds([]) // Clear selection on filter change
+        setSelectedIds([])
       }}
       className={cn(
         "relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2",
@@ -213,14 +223,16 @@ export function ScheduledPostsClient({ initialPosts = [] }: { initialPosts: Sche
           </div>
         </div>
 
-        {/* Content Grid */}
+        {/* Content Grid - Now receiving explicitly filtered posts */}
         <PostList 
-          statusFilter={statusFilter} 
-          initialPosts={initialPosts} 
-          dateFilter={dateFilter}
+          posts={visiblePosts}
           selectedIds={selectedIds}
           onToggleSelection={toggleSelection}
-          onPostsLoaded={setCurrentPosts}
+          emptyMessage={
+            statusFilter === 'all' && dateFilter === 'latest'
+              ? "No recent posts found"
+              : `No posts match your filters`
+          }
         />
       </div>
 

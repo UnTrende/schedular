@@ -13,5 +13,5 @@ export default async function ScheduledPostsPage() {
   // Fetch initial posts (status 'all')
   const { data: posts } = await getUserPosts(userId, {})
 
-  return <ScheduledPostsClient initialPosts={posts || []} />
+  return <ScheduledPostsClient initialPosts={posts || []} serverNow={new Date()} />
 }
