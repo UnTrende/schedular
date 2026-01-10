@@ -6,71 +6,153 @@ import { useToast } from '@/components/providers/toast-provider'
 import { FILE_UPLOAD } from '@/lib/constants'
 import { formatFileSize } from '@/lib/utils'
 import Image from 'next/image'
+import { Platform } from '@/types'
+import { ImageCropper } from '@/components/shared/image-cropper'
 
 interface MediaUploaderProps {
   onUploadComplete: (urls: string[]) => void
   maxFiles?: number
   existingUrls?: string[]
+  platform: Platform // NEW: Need platform for ratio constraints
 }
 
-export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [] }: MediaUploaderProps) {
+export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [], platform }: MediaUploaderProps) {
   const [uploading, setUploading] = useState(false)
   const [uploadedUrls, setUploadedUrls] = useState<string[]>(existingUrls)
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({})
   const toast = useToast()
 
+  // Cropper State
+  const [cropFile, setCropFile] = useState<File | null>(null)
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null)
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]) // Files waiting in queue
+
+  const getTargetRatio = (p: Platform) => {
+    // Return aspect ratio (width / height)
+    switch (p) {
+      case 'instagram': return 4 / 5; // 0.8
+      case 'twitter': return 16 / 9; // 1.91 (approx)
+      case 'linkedin': return 1.91;
+      case 'facebook': return 1.91;
+      default: return 1;
+    }
+  }
+
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    
     if (!files.length) return
 
+    processFiles(files)
+  }
+
+  const processFiles = async (files: File[]) => {
     // Check max files
     if (uploadedUrls.length + files.length > maxFiles) {
       toast.error(`Maximum ${maxFiles} files allowed`)
       return
     }
 
-    // Validate files
+    const filesToUpload: File[] = []
+
     for (const file of files) {
+      // Size Check
       if (file.size > FILE_UPLOAD.maxSize) {
         toast.error(`File ${file.name} is too large. Max size: ${formatFileSize(FILE_UPLOAD.maxSize)}`)
-        return
+        continue
       }
 
+      // Type Check
       if (!FILE_UPLOAD.acceptedTypes.includes(file.type as any)) {
         toast.error(`File type ${file.type} is not supported`)
-        return
+        continue
       }
 
-      // Aspect Ratio Check for Images
+      // Image Ratio Check
       if (file.type.startsWith('image/')) {
-        try {
-          const isValidRatio = await new Promise<boolean>((resolve) => {
-             const img = new window.Image()
-             img.src = URL.createObjectURL(file)
-             img.onload = () => {
-               const ratio = img.width / img.height
-               URL.revokeObjectURL(img.src)
-               // Instagram: 4:5 (0.8) to 1.91:1 (1.91)
-               if (ratio < 0.8 || ratio > 1.91) {
-                 resolve(false)
-               } else {
-                 resolve(true)
-               }
-             }
-             img.onerror = () => resolve(true) // Skip check on error
-          })
+        const needsCrop = await checkAspectRatio(file);
+        if (needsCrop) {
+          // Determine if we crop now or queue it
+          // Simple flow: Crop one at a time.
+          // If multiple files need crop, we might need a more complex queue UI.
+          // For MVP: If ANY file needs crop, trigger crop for the FIRST one causing issue
+          setCropFile(file);
+          setCropImageSrc(URL.createObjectURL(file));
 
-          if (!isValidRatio) {
-            toast.error(`Image ${file.name} has invalid aspect ratio. Allowed: 4:5 to 1.91:1`)
-            return
-          }
-        } catch (e) {
-          // Ignore validation errors
+          // Add remaining files to queue to process after this crop
+          const remaining = files.filter(f => f !== file);
+          setPendingFiles(remaining);
+          return; // Stop processing to handle crop UI
         }
       }
+
+      filesToUpload.push(file);
     }
 
+    if (filesToUpload.length > 0) {
+      await uploadFiles(filesToUpload);
+    }
+  }
+
+  const checkAspectRatio = async (file: File): Promise<boolean> => {
+    // Skip for video
+    if (!file.type.startsWith('image/')) return false;
+
+    return new Promise<boolean>((resolve) => {
+      const img = new window.Image()
+      img.src = URL.createObjectURL(file)
+      img.onload = () => {
+        const ratio = img.width / img.height
+        URL.revokeObjectURL(img.src)
+
+        // Platform specifics
+        // Instagram is strict: 0.8 to 1.91
+        if (platform === 'instagram') {
+          if (ratio < 0.8 || ratio > 1.91) resolve(true); // Needs crop
+          else resolve(false);
+        } else {
+          // Others are loose, but let's offer crop if it's Extreme
+          if (ratio < 0.5 || ratio > 2.5) resolve(true);
+          else resolve(false);
+        }
+      }
+      img.onerror = () => resolve(false)
+    })
+  }
+
+  const onCropConfirm = async (blob: Blob) => {
+    if (!cropFile) return;
+
+    // Create new File from Blob
+    const croppedFile = new File([blob], cropFile.name, { type: cropFile.type });
+
+    // Close Modal
+    setCropImageSrc(null);
+    setCropFile(null);
+
+    // Upload the cropped file
+    await uploadFiles([croppedFile]);
+
+    // Process remaining queue
+    if (pendingFiles.length > 0) {
+      const nextBatch = [...pendingFiles];
+      setPendingFiles([]);
+      processFiles(nextBatch);
+    }
+  }
+
+  const onCropCancel = () => {
+    setCropImageSrc(null);
+    setCropFile(null);
+    // Clear queue if canceled? Or just skip this file?
+    // Let's process remaining just in case
+    if (pendingFiles.length > 0) {
+      const nextBatch = [...pendingFiles];
+      setPendingFiles([]);
+      processFiles(nextBatch);
+    }
+  }
+
+  const uploadFiles = async (files: File[]) => {
     setUploading(true)
 
     try {
@@ -122,7 +204,8 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
       const allUrls = [...uploadedUrls, ...newUrls]
       setUploadedUrls(allUrls)
       onUploadComplete(allUrls)
-      toast.success(`Uploaded ${newUrls.length} file(s)`)
+      if (newUrls.length > 0) toast.success(`Uploaded ${newUrls.length} file(s)`)
+
     } catch (error) {
       toast.error('Upload failed')
     } finally {
@@ -139,6 +222,17 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
 
   return (
     <div className="space-y-4">
+      {/* Crop Modal */}
+      {cropImageSrc && (
+        <ImageCropper
+          isOpen={!!cropImageSrc}
+          imageSrc={cropImageSrc}
+          aspectRatio={getTargetRatio(platform)}
+          onCropComplete={onCropConfirm}
+          onCancel={onCropCancel}
+        />
+      )}
+
       {/* Upload Button */}
       {uploadedUrls.length < maxFiles && (
         <div>

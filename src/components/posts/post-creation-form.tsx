@@ -170,6 +170,7 @@ export function PostCreationForm({ initialDate, onPostCreated, onCancel }: PostC
               onUploadComplete={(urls) => setMediaUrls(urls)}
               maxFiles={4}
               existingUrls={mediaUrls}
+              platform={previewPlatform}
             />
           </div>
 
