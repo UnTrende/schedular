@@ -13,10 +13,10 @@ interface MediaUploaderProps {
   onUploadComplete: (urls: string[]) => void
   maxFiles?: number
   existingUrls?: string[]
-  platform: Platform // NEW: Need platform for ratio constraints
+  platforms: Platform[] // Replaced single platform with array
 }
 
-export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [], platform }: MediaUploaderProps) {
+export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [], platforms }: MediaUploaderProps) {
   const [uploading, setUploading] = useState(false)
   const [uploadedUrls, setUploadedUrls] = useState<string[]>(existingUrls)
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({})
@@ -25,13 +25,13 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
   // Cropper State
   const [cropFile, setCropFile] = useState<File | null>(null)
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null)
-  const [pendingFiles, setPendingFiles] = useState<File[]>([]) // Files waiting in queue
+  const [targetRatio, setTargetRatio] = useState<number>(1)
+  const [pendingFiles, setPendingFiles] = useState<File[]>([])
 
   const getTargetRatio = (p: Platform) => {
-    // Return aspect ratio (width / height)
     switch (p) {
-      case 'instagram': return 4 / 5; // 0.8
-      case 'twitter': return 16 / 9; // 1.91 (approx)
+      case 'instagram': return 4 / 5;
+      case 'twitter': return 16 / 9;
       case 'linkedin': return 1.91;
       case 'facebook': return 1.91;
       default: return 1;
@@ -41,12 +41,10 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (!files.length) return
-
     processFiles(files)
   }
 
   const processFiles = async (files: File[]) => {
-    // Check max files
     if (uploadedUrls.length + files.length > maxFiles) {
       toast.error(`Maximum ${maxFiles} files allowed`)
       return
@@ -55,36 +53,29 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
     const filesToUpload: File[] = []
 
     for (const file of files) {
-      // Size Check
       if (file.size > FILE_UPLOAD.maxSize) {
         toast.error(`File ${file.name} is too large. Max size: ${formatFileSize(FILE_UPLOAD.maxSize)}`)
         continue
       }
 
-      // Type Check
       if (!FILE_UPLOAD.acceptedTypes.includes(file.type as any)) {
         toast.error(`File type ${file.type} is not supported`)
         continue
       }
 
-      // Image Ratio Check
       if (file.type.startsWith('image/')) {
-        const needsCrop = await checkAspectRatio(file);
-        if (needsCrop) {
-          // Determine if we crop now or queue it
-          // Simple flow: Crop one at a time.
-          // If multiple files need crop, we might need a more complex queue UI.
-          // For MVP: If ANY file needs crop, trigger crop for the FIRST one causing issue
+        const mismatchPlatform = await checkMultiPlatformRatio(file);
+        if (mismatchPlatform) {
+          const ratio = getTargetRatio(mismatchPlatform);
+          setTargetRatio(ratio);
           setCropFile(file);
           setCropImageSrc(URL.createObjectURL(file));
 
-          // Add remaining files to queue to process after this crop
           const remaining = files.filter(f => f !== file);
           setPendingFiles(remaining);
-          return; // Stop processing to handle crop UI
+          return;
         }
       }
-
       filesToUpload.push(file);
     }
 
@@ -93,53 +84,50 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
     }
   }
 
-  const checkAspectRatio = async (file: File): Promise<boolean> => {
-    // Skip for video
-    if (!file.type.startsWith('image/')) return false;
+  const checkMultiPlatformRatio = async (file: File): Promise<Platform | null> => {
+    if (!file.type.startsWith('image/')) return null;
 
-    return new Promise<boolean>((resolve) => {
+    return new Promise((resolve) => {
       const img = new window.Image()
       img.src = URL.createObjectURL(file)
       img.onload = () => {
         const ratio = img.width / img.height
         URL.revokeObjectURL(img.src)
 
-        // Platform specifics
-        // Instagram is strict: 0.8 to 1.91
-        if (platform === 'instagram') {
-          if (ratio < 0.8 || ratio > 1.91) resolve(true); // Needs crop
-          else resolve(false);
-        } else {
-          // Others are loose, but let's offer crop if it's Extreme
-          if (ratio < 0.5 || ratio > 2.5) resolve(true);
-          else resolve(false);
+        // Find the first platform that fails
+        for (const p of platforms) {
+          if (p === 'instagram') {
+            if (ratio < 0.8 || ratio > 1.91) {
+              resolve(p);
+              return;
+            }
+          } else {
+            if (ratio < 0.5 || ratio > 2.5) {
+              resolve(p);
+              return;
+            }
+          }
         }
+        resolve(null);
       }
-      img.onerror = () => resolve(false)
+      img.onerror = () => resolve(null)
     })
   }
 
   const onCropConfirm = async (blob: Blob) => {
     if (!cropFile) return;
 
-    // Create new File from Blob - Force JPEG to match the canvas output in ImageCropper
     const croppedFile = new File([blob], cropFile.name.replace(/\.[^/.]+$/, "") + ".jpg", {
       type: 'image/jpeg'
     });
 
-    // Revoke old URL to free memory
-    if (cropImageSrc) {
-      URL.revokeObjectURL(cropImageSrc);
-    }
+    if (cropImageSrc) URL.revokeObjectURL(cropImageSrc);
 
-    // Close Modal
     setCropImageSrc(null);
     setCropFile(null);
 
-    // Upload the cropped file
     await uploadFiles([croppedFile]);
 
-    // Process remaining queue
     if (pendingFiles.length > 0) {
       const nextBatch = [...pendingFiles];
       setPendingFiles([]);
@@ -237,7 +225,7 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
         <ImageCropper
           isOpen={!!cropImageSrc}
           imageSrc={cropImageSrc}
-          aspectRatio={getTargetRatio(platform)}
+          aspectRatio={targetRatio}
           onCropComplete={onCropConfirm}
           onCancel={onCropCancel}
         />
@@ -320,13 +308,37 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
                   />
                 )}
               </div>
-              <button
-                type="button"
-                onClick={() => handleRemove(url)}
-                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <span className="material-symbols-outlined text-base">close</span>
-              </button>
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {!url.match(/\.(mp4|mov)$/i) && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        const response = await fetch(url);
+                        const blob = await response.blob();
+                        const file = new File([blob], "image.jpg", { type: 'image/jpeg' });
+                        setCropFile(file);
+                        setCropImageSrc(URL.createObjectURL(blob));
+                        setTargetRatio(getTargetRatio(platforms[0])); // Default to first platform
+                        // We also need to remove it from current list once re-cropped
+                        handleRemove(url);
+                      } catch (e) {
+                        toast.error("Failed to load image for cropping");
+                      }
+                    }}
+                    className="p-1.5 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-primary transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-base">crop</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleRemove(url)}
+                  className="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-base">close</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

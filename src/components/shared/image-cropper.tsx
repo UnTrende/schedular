@@ -49,43 +49,72 @@ export function ImageCropper({ imageSrc, aspectRatio, onCropComplete, onCancel, 
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-            <DialogContent className="sm:max-w-xl">
-                <DialogHeader>
-                    <DialogTitle>Crop Image</DialogTitle>
-                </DialogHeader>
-
-                <div className="relative w-full h-[400px] bg-black rounded-md overflow-hidden">
-                    <Cropper
-                        image={imageSrc}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={aspectRatio}
-                        onCropChange={onCropChange}
-                        onCropComplete={onCropCompleteHandler}
-                        onZoomChange={onZoomChange}
-                    />
+            <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-950 border-none overflow-hidden p-0">
+                {/* Aurora Background Effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full" />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[100px] rounded-full" />
                 </div>
 
-                <div className="py-4 space-y-2">
-                    <span className="text-sm font-medium">Zoom</span>
-                    <Slider
-                        defaultValue={[1]}
-                        min={1}
-                        max={3}
-                        step={0.1}
-                        value={[zoom]}
-                        onValueChange={(vals) => setZoom(vals[0])}
-                    />
-                </div>
+                <div className="relative z-10 p-6 space-y-6">
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold font-heading bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
+                            Refine Your Vision
+                        </DialogTitle>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                            Adjust your image to fit the platform&apos;s perfect frame.
+                        </p>
+                    </DialogHeader>
 
-                <DialogFooter>
-                    <Button variant="ghost" onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSave}>
-                        Apply Crop
-                    </Button>
-                </DialogFooter>
+                    <div className="relative w-full h-[450px] bg-slate-100 dark:bg-slate-900 rounded-3xl overflow-hidden shadow-inner ring-1 ring-slate-200 dark:ring-slate-800">
+                        <Cropper
+                            image={imageSrc}
+                            crop={crop}
+                            zoom={zoom}
+                            aspect={aspectRatio}
+                            onCropChange={onCropChange}
+                            onCropComplete={onCropCompleteHandler}
+                            onZoomChange={onZoomChange}
+                            classes={{
+                                containerClassName: "cursor-move",
+                                cropAreaClassName: "ring-2 ring-primary ring-offset-2 ring-offset-black/50 shadow-[0_0_50px_rgba(0,0,0,0.5)] !border-none",
+                            }}
+                        />
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold flex items-center gap-2">
+                                <span className="material-symbols-outlined text-lg text-primary">zoom_in</span>
+                                Zoom Level
+                            </span>
+                            <span className="text-xs font-medium bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
+                                {zoom.toFixed(1)}x
+                            </span>
+                        </div>
+                        <Slider
+                            defaultValue={[1]}
+                            min={1}
+                            max={3}
+                            step={0.1}
+                            value={[zoom]}
+                            onValueChange={(vals) => setZoom(vals[0])}
+                            className="py-2"
+                        />
+                    </div>
+
+                    <DialogFooter className="gap-2 sm:gap-0">
+                        <Button variant="ghost" onClick={onCancel} className="hover:bg-slate-100 dark:hover:bg-slate-800">
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleSave}
+                            className="bg-primary hover:bg-primary/90 text-white px-8 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95"
+                        >
+                            Confirm Selection
+                        </Button>
+                    </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
     )
