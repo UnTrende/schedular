@@ -1,9 +1,7 @@
-// Platform Configuration
 export const PLATFORMS = {
   twitter: {
     name: 'Twitter / X',
-    icon: 'flutter_dash',
-    color: 'sky',
+    brandColor: '#1DA1F2',
     maxChars: 280,
     supportsMedia: true,
     maxMediaFiles: 4,
@@ -11,8 +9,7 @@ export const PLATFORMS = {
   },
   facebook: {
     name: 'Facebook',
-    icon: 'social_leaderboard',
-    color: 'blue',
+    brandColor: '#1877F2',
     maxChars: 63206,
     supportsMedia: true,
     maxMediaFiles: 10,
@@ -20,8 +17,7 @@ export const PLATFORMS = {
   },
   instagram: {
     name: 'Instagram',
-    icon: 'camera_alt',
-    color: 'pink',
+    brandColor: '#E4405F',
     maxChars: 2200,
     supportsMedia: true,
     maxMediaFiles: 10,
@@ -29,8 +25,7 @@ export const PLATFORMS = {
   },
   linkedin: {
     name: 'LinkedIn',
-    icon: 'business_center',
-    color: 'indigo',
+    brandColor: '#0A66C2',
     maxChars: 3000,
     supportsMedia: true,
     maxMediaFiles: 9,

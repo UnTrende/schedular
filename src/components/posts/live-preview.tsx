@@ -60,7 +60,11 @@ export function LivePreview({ content, mediaUrls, platform }: LivePreviewProps) 
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1">
                                 <span className="font-bold text-sm text-slate-900 dark:text-white truncate">{mockUser.name}</span>
-                                {platform === 'twitter' && <span className="material-symbols-outlined text-blue-400 text-[14px] leading-none">verified</span>}
+                                {platform === 'twitter' && (
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#1DA1F2]" fill="currentColor">
+                                        <path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.97-.81-4.08s-2.77-1.47-4.16-1.11c-.63-1.35-1.93-2.22-3.41-2.22s-2.78.87-3.41 2.22c-1.39-.36-2.97-.08-4.08.81s-1.47 2.77-1.11 4.16c-1.35.63-2.22 1.93-2.22 3.41s.87 2.78 2.22 3.41c-.36 1.39-.08 2.97.81 4.08s2.77 1.47 4.16 1.11c.63 1.35 1.93 2.22 3.41 2.22s2.78-.87 3.41-2.22c1.39.36 2.97.08 4.08-.81s1.47-2.77 1.11-4.16c1.35-.63 2.22-1.93 2.22-3.41zm-12.25 5l-4-4 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                    </svg>
+                                )}
                             </div>
                             <div className="text-xs text-slate-500 truncate">
                                 {platform === 'twitter' ? mockUser.handle : 'Just now'}
