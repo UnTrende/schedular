@@ -32,13 +32,18 @@ export function ImageCropper({ imageSrc, aspectRatio, onCropComplete, onCancel, 
     }, [])
 
     const handleSave = async () => {
+        if (!croppedAreaPixels) return
+
         try {
             const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels)
             if (croppedImage) {
                 onCropComplete(croppedImage)
+            } else {
+                throw new Error('Failed to generate cropped image')
             }
         } catch (e) {
-            console.error(e)
+            console.error('Crop failed:', e)
+            alert('Failed to crop image. Please try again.')
         }
     }
 
@@ -111,10 +116,14 @@ async function getCroppedImg(imageSrc: string, pixelCrop: any): Promise<Blob | n
         pixelCrop.height
     )
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         canvas.toBlob((blob) => {
+            if (!blob) {
+                reject(new Error('Canvas is empty'))
+                return
+            }
             resolve(blob)
-        }, 'image/jpeg', 0.95) // High quality jpeg
+        }, 'image/jpeg', 0.9) // High quality jpeg
     })
 }
 
@@ -123,7 +132,13 @@ function createImage(url: string): Promise<HTMLImageElement> {
         const image = new Image()
         image.addEventListener('load', () => resolve(image))
         image.addEventListener('error', (error) => reject(error))
-        image.setAttribute('crossOrigin', 'anonymous')
+
+        // ONLY set crossOrigin if it's not a local blob URL
+        // Setting crossOrigin on blobs can block canvas access in some browsers (e.g. Safari/Vercel environments)
+        if (!url.startsWith('blob:')) {
+            image.setAttribute('crossOrigin', 'anonymous')
+        }
+
         image.src = url
     })
 }

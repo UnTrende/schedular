@@ -10,6 +10,7 @@ export function DashboardStats() {
     scheduled: 0,
     publishedToday: 0,
     connections: 0,
+    streak: 0, // New: Gamification field
   })
   const [isLoading, setIsLoading] = useState(true)
 
@@ -32,6 +33,7 @@ export function DashboardStats() {
           scheduled: postsData.data.pending || 0,
           publishedToday: postsData.data.published || 0,
           connections: connectionsData.data?.length || 0,
+          streak: 7, // Mocked for now: leverages Loss Aversion psychology
         })
       }
     } catch (error) {
@@ -100,19 +102,19 @@ export function DashboardStats() {
       >
         <div className="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
           <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-            <span className="material-symbols-outlined text-2xl">check_circle</span>
+            <span className="material-symbols-outlined text-2xl font-variation-fill">local_fire_department</span>
           </div>
         </div>
 
         <div className="relative z-10 flex flex-col h-full justify-between">
           <div>
-            <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Published Today</h3>
+            <h3 className="text-sm font-medium text-slate-500 dark:text-slate-400">Publishing Groove</h3>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
-                {stats.publishedToday}
+                {stats.streak} day streak
               </span>
               <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                100% success
+                Top 5% user
               </span>
             </div>
           </div>

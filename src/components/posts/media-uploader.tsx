@@ -122,8 +122,15 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
   const onCropConfirm = async (blob: Blob) => {
     if (!cropFile) return;
 
-    // Create new File from Blob
-    const croppedFile = new File([blob], cropFile.name, { type: cropFile.type });
+    // Create new File from Blob - Force JPEG to match the canvas output in ImageCropper
+    const croppedFile = new File([blob], cropFile.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+      type: 'image/jpeg'
+    });
+
+    // Revoke old URL to free memory
+    if (cropImageSrc) {
+      URL.revokeObjectURL(cropImageSrc);
+    }
 
     // Close Modal
     setCropImageSrc(null);
@@ -141,10 +148,13 @@ export function MediaUploader({ onUploadComplete, maxFiles = 4, existingUrls = [
   }
 
   const onCropCancel = () => {
+    if (cropImageSrc) {
+      URL.revokeObjectURL(cropImageSrc);
+    }
     setCropImageSrc(null);
     setCropFile(null);
-    // Clear queue if canceled? Or just skip this file?
-    // Let's process remaining just in case
+
+    // Process remaining queue
     if (pendingFiles.length > 0) {
       const nextBatch = [...pendingFiles];
       setPendingFiles([]);

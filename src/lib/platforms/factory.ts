@@ -1,6 +1,8 @@
 import { SocialPlatform } from "./types";
 import { FacebookPlatform } from "./facebook";
 import { InstagramPlatform } from "./instagram";
+import { LinkedInPlatform } from "./linkedin";
+import { TwitterPlatform } from "./twitter";
 import { Platform } from "@/types";
 
 export class PlatformFactory {
@@ -11,8 +13,9 @@ export class PlatformFactory {
             case "instagram":
                 return new InstagramPlatform();
             case "twitter":
+                return new TwitterPlatform();
             case "linkedin":
-                throw new Error(`${platformName} publishing not yet implemented`);
+                return new LinkedInPlatform();
             default:
                 throw new Error(`Unsupported platform: ${platformName}`);
         }
