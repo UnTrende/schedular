@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { getSupabaseServer } from '@/lib/supabase/server'
+import { deletePostsBatch } from '@/lib/db/posts'
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -16,15 +16,9 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid post IDs' }, { status: 400 })
     }
 
-    const supabase = getSupabaseServer()
+    const { success, error } = await deletePostsBatch(userId, postIds)
 
-    const { error } = await supabase
-      .from('scheduled_posts')
-      .delete()
-      .eq('user_id', userId)
-      .in('id', postIds)
-
-    if (error) {
+    if (!success) {
       console.error('Batch delete error:', error)
       return NextResponse.json({ error: 'Failed to delete posts' }, { status: 500 })
     }

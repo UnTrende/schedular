@@ -105,7 +105,7 @@ export async function updatePost(
 }
 
 export async function deletePost(postId: string) {
-  const { error } = await getDb()
+  const { error } = await getSupabaseServerClient()
     .from('scheduled_posts')
     .delete()
     .eq('id', postId)
@@ -118,9 +118,24 @@ export async function deletePost(postId: string) {
   return { success: true, error: null }
 }
 
+export async function deletePostsBatch(userId: string, postIds: string[]) {
+  const { error } = await getSupabaseServerClient()
+    .from('scheduled_posts')
+    .delete()
+    .eq('user_id', userId)
+    .in('id', postIds)
+
+  if (error) {
+    console.error('Error deleting posts batch:', error)
+    return { success: false, error }
+  }
+
+  return { success: true, error: null }
+}
+
 export async function getUpcomingPosts(userId: string, limit = 10) {
   const now = new Date().toISOString()
-  
+
   const { data, error } = await getDb()
     .from('scheduled_posts')
     .select('*')
@@ -140,7 +155,7 @@ export async function getUpcomingPosts(userId: string, limit = 10) {
 
 export async function getPostStats(userId: string) {
   const db = getDb()
-  
+
   const queries = [
     db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId),
     db.from('scheduled_posts').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'pending'),
@@ -179,13 +194,13 @@ export async function updatePostStatusServer(
   errorMessage?: string
 ) {
   const supabase = getDb()
-  
+
   const updates: any = { status }
-  
+
   if (status === 'published') {
     updates.published_at = new Date().toISOString()
   }
-  
+
   if (errorMessage) {
     updates.error_message = errorMessage
   }
